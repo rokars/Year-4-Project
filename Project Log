@@ -1,0 +1,77 @@
+    2020 Year Project Log
+
+12 Oct
+
+  Project Ideas:  bicycle ...
+                  motorcycle ...
+                  airplane ...
+                  car ...
+
+  Software --
+  Hardware ++
+
+
+19 Oct
+
+ Idea 1: Airplane Flight Data Recorder.
+  Using many sensors to acquire data, process, display it. Used to help
+  investigators in crash scenario
+
+ Idea 2:
+
+  Digital Flight Data Recorder
+
+  The objective in the selection of parameters is that the following information,
+  required for accident investigation purposes shall be obtainable either directly
+  or by deduction from the system.
+          a) the flight path of the airplane,
+          b) the attitude of the airplane in achieving that flight path,
+          c) the basic forces acting upon the airplane and resulting in the
+             achieved flight path (eg lift; drag; thrust; control forces),
+
+  System parameters
+  1. Time (GMT or elapsed time)
+  2. Pressure altitude
+  3. Airspeed
+  4. Normal acceleration (i.e. normal to the longitude and lateral axis of the
+     airplane)
+  5. Compass heading
+  6. Engine power
+  7. Flap angle
+  8. Temperature
+  9. Primary flying controls
+
+
+26 Oct
+
+  Proposal due Friday 29th
+
+  Main board to use: Arduino - need a separate Wi-Fi module, limited inputs/outputs
+                     Esp8266 - limited GPIO
+                     Intel Edison - too powerful, big footprint
+                     Raspberry Pi -  big footprint
+                     Esp32 - use of Arduino libraries, modules
+
+  Esp32 languages - Arduino IDE - C++ API
+                    ESP - IDF   - C API, FreeRTOS - complicated
+                    Micropython - Python - need to learn from start
+                    MicroEJ SDK - not supported board
+
+  mongoose OS?
+  mDash?
+
+
+2 Nov
+
+  Components to use to measure proposed parameters:
+      Time - Arduino time libraries - RTC? get time on program start
+      Pressure Altitude - barometric pressure & altitude - BMP280
+                                                           BME280 =+ humidity
+                                                           BMP388 = updated
+      Airspeed - GPS measurement (actual airspeed = pitot tube, expensive)
+      Normal Acceleration - acceleration ADXL3xx Accelerometer
+      Compass Heading - magnetometer HMC5883l
+      Engine power - digital / analogue input from receiver, motor
+      Flap, controls angle - digital / analogue input from receiver, servo
+      Temperature - tmp36
+      Primary flight controls - digital / analogue input from receiver, servo
