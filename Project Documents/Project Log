@@ -97,4 +97,9 @@
 
   Created project plan,
   Components submitted,
-  Researching Accelerometers and I2C 
+  Researching Accelerometers and I2C
+
+2 Dec
+
+  blocker: components
+  moving to charting.js

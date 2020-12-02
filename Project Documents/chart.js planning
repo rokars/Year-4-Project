@@ -1,0 +1,12 @@
+
+
+var userDataSchema = new Schema({
+  TimeStampDate: String,              // Time
+  AltitudeQnh_meters: String,          // Pressure altitude
+  AirSpeed_knots: String,              // GPS speed
+  VerticalSpeed_m/s: String,
+  NormalAcceleration_g: String,       // Normal acceleration
+  MotorPower_volts: String,           // Motor power
+  OutsideTemp_celsius: String,       // Temperature
+
+})
