@@ -1,0 +1,80 @@
+<!<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatable" content="ie=edge">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.bundle.min.js"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+  <title>MyChart.js Chart</title>
+
+</head>
+<body>
+  <div class="container">
+    <canvas id="myChart"></canvas>
+    </div>
+
+    <script>
+      let myChart = document.getElementById('myChart').getContext('2d');
+
+      // Global options
+      Chart.defaults.global.defaultFontFamily='Lato';
+      Chart.defaults.global.defaultFontSize=18;
+      Chart.defaults.global.defaultFontColor='LightGrey';
+
+      let massPopChart = new Chart(myChart, {
+        type:'line', // bar, horizontalBar, pie, line, doughnut, radar, polarArea
+        data:{
+          labels:[ 'Boston', 'Worcester', 'Springfield', 'Lowell', 'Cambridge',	'New Bedford'],
+          datasets:[{
+            label:'Population',
+            data:[
+              617594,
+              181045,
+              253060,
+              96519,
+              455162,
+              50000
+            ],
+            //backgroundColor:'green'
+            backgroundColor:[
+              'rgba(255, 99, 71, 0.5)',
+              'rgba(77, 212, 115, 0.5)',
+              'rgba(77, 68, 218, 0.9)',
+              'rgba(150, 233, 63, 0.5)',
+              'rgba(9, 126, 194, 0.5)',
+              'rgba(109, 151, 13, 1)',
+            ],
+            borderWidth:1,
+            borderColor:'#777',
+            hoverBorderWidth:3,
+            hoverBorderColor:'#000'
+          }]
+        },
+        options:{
+          title:{
+            display:true,
+            text:'Largest Cities in Massachusetts',
+            fontSize:25
+          },
+          legend:{
+            display:false,
+            position:'right',
+            labels:{
+              fontColor:'#000'
+            }
+          },
+          layout:{
+            padding:{
+              left:50,
+              right:0,
+              bottom:0,
+              top:0
+            }
+          }
+        }
+      });
+
+    </script>
+</body>
+</html>
