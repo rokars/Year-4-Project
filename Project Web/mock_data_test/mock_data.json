@@ -1,0 +1,803 @@
+{
+	"mock_data": [{
+			"TimeStampDate": "2020-12-26T13:55:12Z",
+			"AltitudeQnh_meters": 85,
+			"AirSpeed_knots": -24.3,
+			"VerticalSpeed_m/s": 4.08,
+			"NormalAcceleration_g": 0.85,
+			"MotorPower_volts": 3.4
+		},
+		{
+			"TimeStampDate": "2020-12-26T21:07:10Z",
+			"AltitudeQnh_meters": 25,
+			"AirSpeed_knots": 11.3,
+			"VerticalSpeed_m/s": 6.55,
+			"NormalAcceleration_g": 1.49,
+			"MotorPower_volts": 1.1
+		},
+		{
+			"TimeStampDate": "2020-12-26T03:10:37Z",
+			"AltitudeQnh_meters": 60,
+			"AirSpeed_knots": -25.0,
+			"VerticalSpeed_m/s": 6.0,
+			"NormalAcceleration_g": -1.79,
+			"MotorPower_volts": 1.2
+		},
+		{
+			"TimeStampDate": "2020-12-26T00:53:02Z",
+			"AltitudeQnh_meters": 56,
+			"AirSpeed_knots": -15.8,
+			"VerticalSpeed_m/s": -2.28,
+			"NormalAcceleration_g": 1.73,
+			"MotorPower_volts": 5.9
+		},
+		{
+			"TimeStampDate": "2020-12-26T16:59:59Z",
+			"AltitudeQnh_meters": 5,
+			"AirSpeed_knots": -0.9,
+			"VerticalSpeed_m/s": -0.61,
+			"NormalAcceleration_g": -1.34,
+			"MotorPower_volts": 2.3
+		},
+		{
+			"TimeStampDate": "2020-12-26T19:39:09Z",
+			"AltitudeQnh_meters": 9,
+			"AirSpeed_knots": -25.8,
+			"VerticalSpeed_m/s": -1.29,
+			"NormalAcceleration_g": 1.45,
+			"MotorPower_volts": 6.5
+		},
+		{
+			"TimeStampDate": "2020-12-26T11:47:59Z",
+			"AltitudeQnh_meters": 50,
+			"AirSpeed_knots": 2.8,
+			"VerticalSpeed_m/s": -4.4,
+			"NormalAcceleration_g": -0.69,
+			"MotorPower_volts": 7.6
+		},
+		{
+			"TimeStampDate": "2020-12-26T22:07:40Z",
+			"AltitudeQnh_meters": 71,
+			"AirSpeed_knots": -5.5,
+			"VerticalSpeed_m/s": 6.1,
+			"NormalAcceleration_g": -1.57,
+			"MotorPower_volts": 6.7
+		},
+		{
+			"TimeStampDate": "2020-12-26T06:05:56Z",
+			"AltitudeQnh_meters": 15,
+			"AirSpeed_knots": -8.8,
+			"VerticalSpeed_m/s": 9.62,
+			"NormalAcceleration_g": -1.05,
+			"MotorPower_volts": 2.8
+		},
+		{
+			"TimeStampDate": "2020-12-26T13:05:14Z",
+			"AltitudeQnh_meters": 83,
+			"AirSpeed_knots": 5.1,
+			"VerticalSpeed_m/s": 9.35,
+			"NormalAcceleration_g": -0.66,
+			"MotorPower_volts": 4.9
+		},
+		{
+			"TimeStampDate": "2020-12-26T09:39:54Z",
+			"AltitudeQnh_meters": 60,
+			"AirSpeed_knots": 17.3,
+			"VerticalSpeed_m/s": -2.63,
+			"NormalAcceleration_g": -1.29,
+			"MotorPower_volts": 7.3
+		},
+		{
+			"TimeStampDate": "2020-12-26T14:16:32Z",
+			"AltitudeQnh_meters": 78,
+			"AirSpeed_knots": 21.6,
+			"VerticalSpeed_m/s": 4.29,
+			"NormalAcceleration_g": 0.54,
+			"MotorPower_volts": 5.5
+		},
+		{
+			"TimeStampDate": "2020-12-26T01:26:17Z",
+			"AltitudeQnh_meters": 6,
+			"AirSpeed_knots": 10.2,
+			"VerticalSpeed_m/s": -0.32,
+			"NormalAcceleration_g": -0.6,
+			"MotorPower_volts": 1.6
+		},
+		{
+			"TimeStampDate": "2020-12-26T20:45:21Z",
+			"AltitudeQnh_meters": 68,
+			"AirSpeed_knots": -21.3,
+			"VerticalSpeed_m/s": -0.79,
+			"NormalAcceleration_g": 1.72,
+			"MotorPower_volts": 6.3
+		},
+		{
+			"TimeStampDate": "2020-12-26T22:53:48Z",
+			"AltitudeQnh_meters": 99,
+			"AirSpeed_knots": -22.7,
+			"VerticalSpeed_m/s": 3.25,
+			"NormalAcceleration_g": -1.11,
+			"MotorPower_volts": 2.2
+		},
+		{
+			"TimeStampDate": "2020-12-26T06:20:29Z",
+			"AltitudeQnh_meters": 67,
+			"AirSpeed_knots": -29.8,
+			"VerticalSpeed_m/s": -8.67,
+			"NormalAcceleration_g": -0.93,
+			"MotorPower_volts": 5.2
+		},
+		{
+			"TimeStampDate": "2020-12-26T00:02:31Z",
+			"AltitudeQnh_meters": 1,
+			"AirSpeed_knots": -28.7,
+			"VerticalSpeed_m/s": 4.35,
+			"NormalAcceleration_g": -1.3,
+			"MotorPower_volts": 3.9
+		},
+		{
+			"TimeStampDate": "2020-12-26T08:35:36Z",
+			"AltitudeQnh_meters": 41,
+			"AirSpeed_knots": 15.5,
+			"VerticalSpeed_m/s": -2.11,
+			"NormalAcceleration_g": 1.49,
+			"MotorPower_volts": 4.8
+		},
+		{
+			"TimeStampDate": "2020-12-26T15:32:06Z",
+			"AltitudeQnh_meters": 21,
+			"AirSpeed_knots": 17.1,
+			"VerticalSpeed_m/s": -3.05,
+			"NormalAcceleration_g": 0.48,
+			"MotorPower_volts": 2.6
+		},
+		{
+			"TimeStampDate": "2020-12-26T00:26:49Z",
+			"AltitudeQnh_meters": 100,
+			"AirSpeed_knots": -28.2,
+			"VerticalSpeed_m/s": 0.94,
+			"NormalAcceleration_g": 0.81,
+			"MotorPower_volts": 1.4
+		},
+		{
+			"TimeStampDate": "2020-12-26T23:30:39Z",
+			"AltitudeQnh_meters": 66,
+			"AirSpeed_knots": 0.9,
+			"VerticalSpeed_m/s": -5.77,
+			"NormalAcceleration_g": 0.32,
+			"MotorPower_volts": 4.4
+		},
+		{
+			"TimeStampDate": "2020-12-26T14:07:16Z",
+			"AltitudeQnh_meters": 84,
+			"AirSpeed_knots": 29.4,
+			"VerticalSpeed_m/s": 8.53,
+			"NormalAcceleration_g": -1.28,
+			"MotorPower_volts": 4.2
+		},
+		{
+			"TimeStampDate": "2020-12-26T16:12:37Z",
+			"AltitudeQnh_meters": 53,
+			"AirSpeed_knots": 20.9,
+			"VerticalSpeed_m/s": -7.34,
+			"NormalAcceleration_g": -1.81,
+			"MotorPower_volts": 7.5
+		},
+		{
+			"TimeStampDate": "2020-12-26T08:39:26Z",
+			"AltitudeQnh_meters": 75,
+			"AirSpeed_knots": 4.7,
+			"VerticalSpeed_m/s": 4.77,
+			"NormalAcceleration_g": -0.46,
+			"MotorPower_volts": 7.0
+		},
+		{
+			"TimeStampDate": "2020-12-26T15:10:19Z",
+			"AltitudeQnh_meters": 57,
+			"AirSpeed_knots": -8.2,
+			"VerticalSpeed_m/s": 9.11,
+			"NormalAcceleration_g": -0.19,
+			"MotorPower_volts": 7.5
+		},
+		{
+			"TimeStampDate": "2020-12-26T02:01:57Z",
+			"AltitudeQnh_meters": 3,
+			"AirSpeed_knots": -18.9,
+			"VerticalSpeed_m/s": -3.42,
+			"NormalAcceleration_g": 1.49,
+			"MotorPower_volts": 7.7
+		},
+		{
+			"TimeStampDate": "2020-12-26T19:53:38Z",
+			"AltitudeQnh_meters": 16,
+			"AirSpeed_knots": -22.4,
+			"VerticalSpeed_m/s": -5.33,
+			"NormalAcceleration_g": 1.87,
+			"MotorPower_volts": 1.3
+		},
+		{
+			"TimeStampDate": "2020-12-26T05:53:07Z",
+			"AltitudeQnh_meters": 25,
+			"AirSpeed_knots": -6.9,
+			"VerticalSpeed_m/s": 3.96,
+			"NormalAcceleration_g": -1.32,
+			"MotorPower_volts": 4.9
+		},
+		{
+			"TimeStampDate": "2020-12-26T21:34:33Z",
+			"AltitudeQnh_meters": 58,
+			"AirSpeed_knots": -9.0,
+			"VerticalSpeed_m/s": -0.33,
+			"NormalAcceleration_g": -1.99,
+			"MotorPower_volts": 2.7
+		},
+		{
+			"TimeStampDate": "2020-12-26T17:56:30Z",
+			"AltitudeQnh_meters": 79,
+			"AirSpeed_knots": 12.7,
+			"VerticalSpeed_m/s": -6.9,
+			"NormalAcceleration_g": -0.83,
+			"MotorPower_volts": 7.5
+		},
+		{
+			"TimeStampDate": "2020-12-26T16:02:08Z",
+			"AltitudeQnh_meters": 25,
+			"AirSpeed_knots": 22.8,
+			"VerticalSpeed_m/s": 6.6,
+			"NormalAcceleration_g": 1.45,
+			"MotorPower_volts": 1.7
+		},
+		{
+			"TimeStampDate": "2020-12-26T22:46:14Z",
+			"AltitudeQnh_meters": 42,
+			"AirSpeed_knots": -11.0,
+			"VerticalSpeed_m/s": -8.82,
+			"NormalAcceleration_g": -0.42,
+			"MotorPower_volts": 2.1
+		},
+		{
+			"TimeStampDate": "2020-12-26T08:51:13Z",
+			"AltitudeQnh_meters": 32,
+			"AirSpeed_knots": 1.0,
+			"VerticalSpeed_m/s": -4.28,
+			"NormalAcceleration_g": -1.95,
+			"MotorPower_volts": 2.5
+		},
+		{
+			"TimeStampDate": "2020-12-26T22:54:36Z",
+			"AltitudeQnh_meters": 21,
+			"AirSpeed_knots": -13.9,
+			"VerticalSpeed_m/s": 4.57,
+			"NormalAcceleration_g": 0.74,
+			"MotorPower_volts": 4.7
+		},
+		{
+			"TimeStampDate": "2020-12-26T07:38:04Z",
+			"AltitudeQnh_meters": 34,
+			"AirSpeed_knots": -9.0,
+			"VerticalSpeed_m/s": 7.59,
+			"NormalAcceleration_g": -0.11,
+			"MotorPower_volts": 3.2
+		},
+		{
+			"TimeStampDate": "2020-12-26T04:12:30Z",
+			"AltitudeQnh_meters": 51,
+			"AirSpeed_knots": -19.8,
+			"VerticalSpeed_m/s": -2.74,
+			"NormalAcceleration_g": 1.02,
+			"MotorPower_volts": 7.6
+		},
+		{
+			"TimeStampDate": "2020-12-26T10:34:22Z",
+			"AltitudeQnh_meters": 78,
+			"AirSpeed_knots": 27.9,
+			"VerticalSpeed_m/s": 6.77,
+			"NormalAcceleration_g": 1.73,
+			"MotorPower_volts": 6.5
+		},
+		{
+			"TimeStampDate": "2020-12-26T06:59:48Z",
+			"AltitudeQnh_meters": 37,
+			"AirSpeed_knots": -21.5,
+			"VerticalSpeed_m/s": 4.78,
+			"NormalAcceleration_g": -1.71,
+			"MotorPower_volts": 2.7
+		},
+		{
+			"TimeStampDate": "2020-12-26T02:55:04Z",
+			"AltitudeQnh_meters": 62,
+			"AirSpeed_knots": 21.8,
+			"VerticalSpeed_m/s": -8.62,
+			"NormalAcceleration_g": 1.61,
+			"MotorPower_volts": 7.8
+		},
+		{
+			"TimeStampDate": "2020-12-26T01:57:31Z",
+			"AltitudeQnh_meters": 0,
+			"AirSpeed_knots": -4.2,
+			"VerticalSpeed_m/s": -4.69,
+			"NormalAcceleration_g": 0.41,
+			"MotorPower_volts": 6.3
+		},
+		{
+			"TimeStampDate": "2020-12-26T02:39:53Z",
+			"AltitudeQnh_meters": 41,
+			"AirSpeed_knots": -23.8,
+			"VerticalSpeed_m/s": 1.32,
+			"NormalAcceleration_g": -1.68,
+			"MotorPower_volts": 1.6
+		},
+		{
+			"TimeStampDate": "2020-12-26T05:04:44Z",
+			"AltitudeQnh_meters": 74,
+			"AirSpeed_knots": -8.2,
+			"VerticalSpeed_m/s": -2.14,
+			"NormalAcceleration_g": 1.56,
+			"MotorPower_volts": 5.0
+		},
+		{
+			"TimeStampDate": "2020-12-26T01:21:35Z",
+			"AltitudeQnh_meters": 97,
+			"AirSpeed_knots": 29.7,
+			"VerticalSpeed_m/s": 9.79,
+			"NormalAcceleration_g": 0.92,
+			"MotorPower_volts": 6.5
+		},
+		{
+			"TimeStampDate": "2020-12-26T13:23:24Z",
+			"AltitudeQnh_meters": 34,
+			"AirSpeed_knots": 20.1,
+			"VerticalSpeed_m/s": 4.25,
+			"NormalAcceleration_g": -1.48,
+			"MotorPower_volts": 4.2
+		},
+		{
+			"TimeStampDate": "2020-12-26T08:36:28Z",
+			"AltitudeQnh_meters": 84,
+			"AirSpeed_knots": -26.1,
+			"VerticalSpeed_m/s": -0.18,
+			"NormalAcceleration_g": 0.14,
+			"MotorPower_volts": 1.4
+		},
+		{
+			"TimeStampDate": "2020-12-26T23:14:07Z",
+			"AltitudeQnh_meters": 74,
+			"AirSpeed_knots": 21.6,
+			"VerticalSpeed_m/s": -8.75,
+			"NormalAcceleration_g": -1.88,
+			"MotorPower_volts": 5.4
+		},
+		{
+			"TimeStampDate": "2020-12-26T12:38:55Z",
+			"AltitudeQnh_meters": 13,
+			"AirSpeed_knots": 2.4,
+			"VerticalSpeed_m/s": 9.71,
+			"NormalAcceleration_g": 1.36,
+			"MotorPower_volts": 7.0
+		},
+		{
+			"TimeStampDate": "2020-12-26T04:08:03Z",
+			"AltitudeQnh_meters": 59,
+			"AirSpeed_knots": -15.6,
+			"VerticalSpeed_m/s": -6.61,
+			"NormalAcceleration_g": 0.27,
+			"MotorPower_volts": 6.6
+		},
+		{
+			"TimeStampDate": "2020-12-26T17:57:57Z",
+			"AltitudeQnh_meters": 70,
+			"AirSpeed_knots": 8.1,
+			"VerticalSpeed_m/s": -3.27,
+			"NormalAcceleration_g": -0.82,
+			"MotorPower_volts": 2.5
+		},
+		{
+			"TimeStampDate": "2020-12-26T15:23:23Z",
+			"AltitudeQnh_meters": 35,
+			"AirSpeed_knots": 23.9,
+			"VerticalSpeed_m/s": 2.78,
+			"NormalAcceleration_g": -1.67,
+			"MotorPower_volts": 5.1
+		},
+		{
+			"TimeStampDate": "2020-12-26T16:17:05Z",
+			"AltitudeQnh_meters": 34,
+			"AirSpeed_knots": -27.4,
+			"VerticalSpeed_m/s": 3.65,
+			"NormalAcceleration_g": 0.4,
+			"MotorPower_volts": 1.1
+		},
+		{
+			"TimeStampDate": "2020-12-26T16:27:00Z",
+			"AltitudeQnh_meters": 68,
+			"AirSpeed_knots": 24.9,
+			"VerticalSpeed_m/s": -4.58,
+			"NormalAcceleration_g": -0.91,
+			"MotorPower_volts": 6.3
+		},
+		{
+			"TimeStampDate": "2020-12-26T03:12:38Z",
+			"AltitudeQnh_meters": 77,
+			"AirSpeed_knots": -6.2,
+			"VerticalSpeed_m/s": 5.97,
+			"NormalAcceleration_g": 0.38,
+			"MotorPower_volts": 4.7
+		},
+		{
+			"TimeStampDate": "2020-12-26T09:30:45Z",
+			"AltitudeQnh_meters": 87,
+			"AirSpeed_knots": -6.4,
+			"VerticalSpeed_m/s": 4.39,
+			"NormalAcceleration_g": -1.92,
+			"MotorPower_volts": 2.6
+		},
+		{
+			"TimeStampDate": "2020-12-26T15:52:40Z",
+			"AltitudeQnh_meters": 56,
+			"AirSpeed_knots": 4.0,
+			"VerticalSpeed_m/s": -3.27,
+			"NormalAcceleration_g": 0.68,
+			"MotorPower_volts": 7.0
+		},
+		{
+			"TimeStampDate": "2020-12-26T18:22:05Z",
+			"AltitudeQnh_meters": 49,
+			"AirSpeed_knots": -23.5,
+			"VerticalSpeed_m/s": 9.71,
+			"NormalAcceleration_g": -1.24,
+			"MotorPower_volts": 2.8
+		},
+		{
+			"TimeStampDate": "2020-12-26T07:56:36Z",
+			"AltitudeQnh_meters": 41,
+			"AirSpeed_knots": -0.3,
+			"VerticalSpeed_m/s": 3.65,
+			"NormalAcceleration_g": 1.5,
+			"MotorPower_volts": 2.0
+		},
+		{
+			"TimeStampDate": "2020-12-26T16:59:00Z",
+			"AltitudeQnh_meters": 29,
+			"AirSpeed_knots": 21.9,
+			"VerticalSpeed_m/s": 7.05,
+			"NormalAcceleration_g": 1.54,
+			"MotorPower_volts": 4.0
+		},
+		{
+			"TimeStampDate": "2020-12-26T07:13:44Z",
+			"AltitudeQnh_meters": 30,
+			"AirSpeed_knots": 8.8,
+			"VerticalSpeed_m/s": -9.13,
+			"NormalAcceleration_g": -1.81,
+			"MotorPower_volts": 3.3
+		},
+		{
+			"TimeStampDate": "2020-12-26T08:39:05Z",
+			"AltitudeQnh_meters": 13,
+			"AirSpeed_knots": -19.9,
+			"VerticalSpeed_m/s": -2.26,
+			"NormalAcceleration_g": -0.65,
+			"MotorPower_volts": 3.7
+		},
+		{
+			"TimeStampDate": "2020-12-26T06:15:14Z",
+			"AltitudeQnh_meters": 25,
+			"AirSpeed_knots": -5.3,
+			"VerticalSpeed_m/s": -6.63,
+			"NormalAcceleration_g": 0.95,
+			"MotorPower_volts": 6.4
+		},
+		{
+			"TimeStampDate": "2020-12-26T20:07:12Z",
+			"AltitudeQnh_meters": 93,
+			"AirSpeed_knots": -29.5,
+			"VerticalSpeed_m/s": 4.87,
+			"NormalAcceleration_g": 1.69,
+			"MotorPower_volts": 8.0
+		},
+		{
+			"TimeStampDate": "2020-12-26T16:28:57Z",
+			"AltitudeQnh_meters": 47,
+			"AirSpeed_knots": -9.7,
+			"VerticalSpeed_m/s": 8.25,
+			"NormalAcceleration_g": 1.01,
+			"MotorPower_volts": 3.2
+		},
+		{
+			"TimeStampDate": "2020-12-26T08:51:27Z",
+			"AltitudeQnh_meters": 34,
+			"AirSpeed_knots": -24.7,
+			"VerticalSpeed_m/s": 0.11,
+			"NormalAcceleration_g": -0.58,
+			"MotorPower_volts": 5.4
+		},
+		{
+			"TimeStampDate": "2020-12-26T21:19:13Z",
+			"AltitudeQnh_meters": 86,
+			"AirSpeed_knots": 4.6,
+			"VerticalSpeed_m/s": 0.73,
+			"NormalAcceleration_g": 0.48,
+			"MotorPower_volts": 7.0
+		},
+		{
+			"TimeStampDate": "2020-12-26T16:33:36Z",
+			"AltitudeQnh_meters": 95,
+			"AirSpeed_knots": 22.3,
+			"VerticalSpeed_m/s": -7.8,
+			"NormalAcceleration_g": -1.27,
+			"MotorPower_volts": 7.1
+		},
+		{
+			"TimeStampDate": "2020-12-26T09:52:23Z",
+			"AltitudeQnh_meters": 70,
+			"AirSpeed_knots": 5.7,
+			"VerticalSpeed_m/s": -3.98,
+			"NormalAcceleration_g": 1.4,
+			"MotorPower_volts": 6.8
+		},
+		{
+			"TimeStampDate": "2020-12-26T09:11:47Z",
+			"AltitudeQnh_meters": 5,
+			"AirSpeed_knots": 28.7,
+			"VerticalSpeed_m/s": -4.47,
+			"NormalAcceleration_g": -0.11,
+			"MotorPower_volts": 7.1
+		},
+		{
+			"TimeStampDate": "2020-12-26T16:42:18Z",
+			"AltitudeQnh_meters": 21,
+			"AirSpeed_knots": -18.2,
+			"VerticalSpeed_m/s": 1.7,
+			"NormalAcceleration_g": -1.28,
+			"MotorPower_volts": 1.3
+		},
+		{
+			"TimeStampDate": "2020-12-26T17:46:47Z",
+			"AltitudeQnh_meters": 94,
+			"AirSpeed_knots": -24.1,
+			"VerticalSpeed_m/s": 2.29,
+			"NormalAcceleration_g": -1.03,
+			"MotorPower_volts": 3.0
+		},
+		{
+			"TimeStampDate": "2020-12-26T13:05:29Z",
+			"AltitudeQnh_meters": 32,
+			"AirSpeed_knots": 22.4,
+			"VerticalSpeed_m/s": 9.95,
+			"NormalAcceleration_g": -0.43,
+			"MotorPower_volts": 2.3
+		},
+		{
+			"TimeStampDate": "2020-12-26T04:04:33Z",
+			"AltitudeQnh_meters": 25,
+			"AirSpeed_knots": 8.2,
+			"VerticalSpeed_m/s": -6.35,
+			"NormalAcceleration_g": 1.92,
+			"MotorPower_volts": 6.7
+		},
+		{
+			"TimeStampDate": "2020-12-26T10:38:51Z",
+			"AltitudeQnh_meters": 47,
+			"AirSpeed_knots": 28.0,
+			"VerticalSpeed_m/s": -1.13,
+			"NormalAcceleration_g": -0.17,
+			"MotorPower_volts": 3.5
+		},
+		{
+			"TimeStampDate": "2020-12-26T01:40:58Z",
+			"AltitudeQnh_meters": 66,
+			"AirSpeed_knots": -22.3,
+			"VerticalSpeed_m/s": 5.43,
+			"NormalAcceleration_g": -1.98,
+			"MotorPower_volts": 1.3
+		},
+		{
+			"TimeStampDate": "2020-12-26T14:02:44Z",
+			"AltitudeQnh_meters": 71,
+			"AirSpeed_knots": -28.0,
+			"VerticalSpeed_m/s": -8.37,
+			"NormalAcceleration_g": -0.53,
+			"MotorPower_volts": 3.0
+		},
+		{
+			"TimeStampDate": "2020-12-26T10:35:03Z",
+			"AltitudeQnh_meters": 80,
+			"AirSpeed_knots": -4.1,
+			"VerticalSpeed_m/s": 5.91,
+			"NormalAcceleration_g": 1.09,
+			"MotorPower_volts": 4.1
+		},
+		{
+			"TimeStampDate": "2020-12-26T13:52:39Z",
+			"AltitudeQnh_meters": 92,
+			"AirSpeed_knots": -4.6,
+			"VerticalSpeed_m/s": -8.76,
+			"NormalAcceleration_g": 1.73,
+			"MotorPower_volts": 2.9
+		},
+		{
+			"TimeStampDate": "2020-12-26T23:13:46Z",
+			"AltitudeQnh_meters": 45,
+			"AirSpeed_knots": -26.8,
+			"VerticalSpeed_m/s": 2.36,
+			"NormalAcceleration_g": -1.93,
+			"MotorPower_volts": 7.8
+		},
+		{
+			"TimeStampDate": "2020-12-26T15:48:42Z",
+			"AltitudeQnh_meters": 49,
+			"AirSpeed_knots": 3.9,
+			"VerticalSpeed_m/s": -4.22,
+			"NormalAcceleration_g": 0.13,
+			"MotorPower_volts": 4.8
+		},
+		{
+			"TimeStampDate": "2020-12-26T05:49:39Z",
+			"AltitudeQnh_meters": 17,
+			"AirSpeed_knots": 18.6,
+			"VerticalSpeed_m/s": 7.81,
+			"NormalAcceleration_g": -1.22,
+			"MotorPower_volts": 6.8
+		},
+		{
+			"TimeStampDate": "2020-12-26T21:46:39Z",
+			"AltitudeQnh_meters": 96,
+			"AirSpeed_knots": 12.6,
+			"VerticalSpeed_m/s": -5.59,
+			"NormalAcceleration_g": -0.46,
+			"MotorPower_volts": 5.4
+		},
+		{
+			"TimeStampDate": "2020-12-26T01:12:34Z",
+			"AltitudeQnh_meters": 81,
+			"AirSpeed_knots": 17.6,
+			"VerticalSpeed_m/s": 4.05,
+			"NormalAcceleration_g": 0.88,
+			"MotorPower_volts": 2.0
+		},
+		{
+			"TimeStampDate": "2020-12-26T16:49:49Z",
+			"AltitudeQnh_meters": 13,
+			"AirSpeed_knots": 14.8,
+			"VerticalSpeed_m/s": 9.45,
+			"NormalAcceleration_g": -1.82,
+			"MotorPower_volts": 2.9
+		},
+		{
+			"TimeStampDate": "2020-12-26T14:02:17Z",
+			"AltitudeQnh_meters": 13,
+			"AirSpeed_knots": 7.9,
+			"VerticalSpeed_m/s": -2.4,
+			"NormalAcceleration_g": -0.05,
+			"MotorPower_volts": 4.1
+		},
+		{
+			"TimeStampDate": "2020-12-26T23:31:24Z",
+			"AltitudeQnh_meters": 62,
+			"AirSpeed_knots": 12.3,
+			"VerticalSpeed_m/s": 1.76,
+			"NormalAcceleration_g": -1.57,
+			"MotorPower_volts": 7.0
+		},
+		{
+			"TimeStampDate": "2020-12-26T18:55:49Z",
+			"AltitudeQnh_meters": 100,
+			"AirSpeed_knots": 9.6,
+			"VerticalSpeed_m/s": 6.21,
+			"NormalAcceleration_g": 1.64,
+			"MotorPower_volts": 5.1
+		},
+		{
+			"TimeStampDate": "2020-12-26T13:07:02Z",
+			"AltitudeQnh_meters": 42,
+			"AirSpeed_knots": -18.7,
+			"VerticalSpeed_m/s": -4.88,
+			"NormalAcceleration_g": 0.9,
+			"MotorPower_volts": 3.6
+		},
+		{
+			"TimeStampDate": "2020-12-26T13:47:19Z",
+			"AltitudeQnh_meters": 27,
+			"AirSpeed_knots": -23.5,
+			"VerticalSpeed_m/s": 9.78,
+			"NormalAcceleration_g": 1.98,
+			"MotorPower_volts": 2.1
+		},
+		{
+			"TimeStampDate": "2020-12-26T21:32:17Z",
+			"AltitudeQnh_meters": 33,
+			"AirSpeed_knots": 3.7,
+			"VerticalSpeed_m/s": -2.96,
+			"NormalAcceleration_g": 1.25,
+			"MotorPower_volts": 4.7
+		},
+		{
+			"TimeStampDate": "2020-12-26T02:10:15Z",
+			"AltitudeQnh_meters": 45,
+			"AirSpeed_knots": -5.8,
+			"VerticalSpeed_m/s": 7.73,
+			"NormalAcceleration_g": 1.71,
+			"MotorPower_volts": 7.7
+		},
+		{
+			"TimeStampDate": "2020-12-26T06:05:46Z",
+			"AltitudeQnh_meters": 31,
+			"AirSpeed_knots": -21.0,
+			"VerticalSpeed_m/s": 2.04,
+			"NormalAcceleration_g": -0.13,
+			"MotorPower_volts": 6.1
+		},
+		{
+			"TimeStampDate": "2020-12-26T20:17:36Z",
+			"AltitudeQnh_meters": 41,
+			"AirSpeed_knots": 4.1,
+			"VerticalSpeed_m/s": -4.29,
+			"NormalAcceleration_g": -1.62,
+			"MotorPower_volts": 2.1
+		},
+		{
+			"TimeStampDate": "2020-12-26T16:34:51Z",
+			"AltitudeQnh_meters": 0,
+			"AirSpeed_knots": 18.9,
+			"VerticalSpeed_m/s": 3.68,
+			"NormalAcceleration_g": -0.7,
+			"MotorPower_volts": 5.1
+		},
+		{
+			"TimeStampDate": "2020-12-26T10:15:48Z",
+			"AltitudeQnh_meters": 9,
+			"AirSpeed_knots": -15.9,
+			"VerticalSpeed_m/s": -5.33,
+			"NormalAcceleration_g": -0.43,
+			"MotorPower_volts": 7.0
+		},
+		{
+			"TimeStampDate": "2020-12-26T11:32:20Z",
+			"AltitudeQnh_meters": 8,
+			"AirSpeed_knots": 18.5,
+			"VerticalSpeed_m/s": 6.45,
+			"NormalAcceleration_g": -1.82,
+			"MotorPower_volts": 5.0
+		},
+		{
+			"TimeStampDate": "2020-12-26T05:57:32Z",
+			"AltitudeQnh_meters": 6,
+			"AirSpeed_knots": 9.5,
+			"VerticalSpeed_m/s": -3.8,
+			"NormalAcceleration_g": -1.42,
+			"MotorPower_volts": 6.6
+		},
+		{
+			"TimeStampDate": "2020-12-26T02:59:05Z",
+			"AltitudeQnh_meters": 88,
+			"AirSpeed_knots": -24.6,
+			"VerticalSpeed_m/s": -7.39,
+			"NormalAcceleration_g": 0.29,
+			"MotorPower_volts": 4.7
+		},
+		{
+			"TimeStampDate": "2020-12-26T06:49:00Z",
+			"AltitudeQnh_meters": 54,
+			"AirSpeed_knots": -20.0,
+			"VerticalSpeed_m/s": -2.41,
+			"NormalAcceleration_g": 1.88,
+			"MotorPower_volts": 2.4
+		},
+		{
+			"TimeStampDate": "2020-12-26T15:04:26Z",
+			"AltitudeQnh_meters": 86,
+			"AirSpeed_knots": 8.2,
+			"VerticalSpeed_m/s": 3.98,
+			"NormalAcceleration_g": 0.99,
+			"MotorPower_volts": 2.0
+		},
+		{
+			"TimeStampDate": "2020-12-26T07:50:26Z",
+			"AltitudeQnh_meters": 51,
+			"AirSpeed_knots": -22.3,
+			"VerticalSpeed_m/s": 5.62,
+			"NormalAcceleration_g": 0.54,
+			"MotorPower_volts": 6.7
+		}
+	]
+}

@@ -5,34 +5,25 @@
     <title>Project Charts</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment-with-locales.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
   </head>
   <body>
-    <h1> Charts for project</h1>
-    <div class="container">
-      <div class="row">
+    <h1> Charts</h1>
+      <div class="container">
+          <!-- <div class="row">
         <div class="col-6 chart">
               <canvas id="myChart1" width="500" height="400"></canvas>
         </div>
         <div class="col-6 chart">
               <canvas id="myChart2" width="500" height="400"></canvas>
         </div>
-      </div>
-      <canvas id="myChart5" width="1000" height="400"></canvas>
-      <canvas id="myChart6" width="1000" height="400"></canvas>
+      </div> -->
+      <canvas id="myChart5"height='75'></canvas> <br>
+      <canvas id="myChart6"height='75'></canvas> <br>
+      <canvas id="tempChart"height='75'></canvas>
+
     </div>
     <script src="script.js"></script>
   </body>
 </html>
-
- <!-- var userDataSchema = new Schema({
-  TimeStampDate: String,              // Time GMT
-  AltitudeQnh_meters: String,          // Pressure altitude meters
-  AirSpeed_knots: String,              // GPS speed knots
-  VerticalSpeed_m/s: String,          // Vertical Airspeed meters per second
-  NormalAcceleration_g: String,       // Normal acceleration g
-  MotorPower_volts: String,           // Motor power voltage
-  OutsideTemp_celsius: String,       // Temperature celsius
-
-})
-
--->
