@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8">
     <link rel="shortcut icon" href="#">
-    <title>FileReader</title>
+    <title>Y4</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
@@ -12,21 +12,26 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
   </head>
 
-  <body>
-
+  <body style="background-color:#f5f5ed;">
 
     <div class="flex-container">
-      <div class="flex-container-div" style="width:40%;"><h1>Digital Flight Data Recorder Y4 Project Dashboard</h1></div>
-      <div class="flex-container-btn" style="width:25%;"><label for="dataFileUpload">Choose data file to upload (JSON)</label><input type="file" id="dataFileUpload" accept=".json"></div>
-      <div class="flex-container-div"><p id="dataFileName">No files currently selected for upload</p></div>
+      <div class="divH1"><h1>DFDR Y4 Project Dashboard</h1></div>
+      <div class="divLabel"><label for="dataFileUpload" style="">Choose data file to upload (JSON)</label></div>
+      <div class="divPara"><p id="dataFileName">No files currently selected for upload</p></div>
     </div>
 
-    <p id="data"></p>
+    <div class="flex-container2">
+      <!--<p id="data"></p>-->
+      <div><canvas id="altitudeChart"height='75'></canvas></div>
+      <div><canvas id="airSpeedChart"height='75'></canvas></div>
+      <div><canvas id="vertSpeedChart"height='75'></canvas></div>
+    </div>
 
     <div class="container">
-      <canvas id="myChart5"height='75'></canvas> <br>
+
     </div>
 
+    <input type="file" id="dataFileUpload" accept=".json">
     <script src="script.js"></script>
   </body>
 </html>

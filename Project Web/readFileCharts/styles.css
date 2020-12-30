@@ -2,42 +2,50 @@
 
 .flex-container {
   display: flex;
-  background-color: DodgerBlue;
-  //align-items: baseline;
-  justify-content: space-around;
-}
-
-.flex-container-div {
-  background-color: GREY;
-  margin: 5px;
-  padding: 5px;
-}
-
-.flex-container-btn {
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  background-color: #e5e6ae;
   align-items: center;
-  align-items: stretch;
-  align-content: stretch;
-  align-content: center;
+}
+
+.divH1 {
+  margin-left: 10px;
+}
+
+.divLabel {
+  padding-top: 5px;
+  margin-left: 100px;
+}
+
+.divPara {
+  padding-top: 10px;
+  margin-left: 25px;
 }
 
 label, button {
-background-color: #7F9CCB;
-padding: 5px 10px;
-border-radius: 5px;
-border: 1px ridge black;
-font-size: 0.8rem;
-height: auto;
+  background-color: #cfd171;
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: 1px ridge black;
+  font-size: 0.8rem;
+  height: auto;
 }
 
 
 label:hover, button:hover {
-background-color: #2D5BA3;
+background-color: #abad50;
 color: white;
 }
 
 label:active, button:active {
-background-color: #0D3F8F;
+background-color: #83852e;
 color: white;
+}
+
+.flex-container2 {
+  display: flex;
+  flex-direction: column;
+  min-height: 300px;
 }
 
 input {
