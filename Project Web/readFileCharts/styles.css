@@ -1,0 +1,45 @@
+
+
+.flex-container {
+  display: flex;
+  background-color: DodgerBlue;
+  //align-items: baseline;
+  justify-content: space-around;
+}
+
+.flex-container-div {
+  background-color: GREY;
+  margin: 5px;
+  padding: 5px;
+}
+
+.flex-container-btn {
+  align-items: center;
+  align-items: stretch;
+  align-content: stretch;
+  align-content: center;
+}
+
+label, button {
+background-color: #7F9CCB;
+padding: 5px 10px;
+border-radius: 5px;
+border: 1px ridge black;
+font-size: 0.8rem;
+height: auto;
+}
+
+
+label:hover, button:hover {
+background-color: #2D5BA3;
+color: white;
+}
+
+label:active, button:active {
+background-color: #0D3F8F;
+color: white;
+}
+
+input {
+  opacity: 0;
+}
