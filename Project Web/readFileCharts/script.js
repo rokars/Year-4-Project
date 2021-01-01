@@ -1,150 +1,101 @@
 const fileInput = document.getElementById('dataFileUpload');
 fileInput.addEventListener('change', readJson);
-var jsonData;
 
 function readJson() {
-  updateInputPara(fileInput.files[0].name);
+  var str = "File Selected: <br>" + fileInput.files[0].name;
+  document.getElementById('dataFileName').innerHTML = str;
+
   var reader = new FileReader();
   var file = fileInput.files[0];
 
   reader.onload = function() {
-    readerCallback(reader.result);
+    readData(reader.result);
   }
 
   reader.readAsText(file);
 }
 
-function updateInputPara(fileName) {
-  var str = "File Selected: <br>" + fileName;
-  document.getElementById('dataFileName').innerHTML = str;
-}
+function readData(dataInput) {
 
-function readerCallback(data) {
-  jsonData = JSON.parse(data);
-  var string = "";
+  jsonData = JSON.parse(dataInput);
 
-  /*for (var i = 0; i < jsonData.mock_data.length; i++) {
-    string += "<b> Time Stamp (UTC): </b>" + jsonData.mock_data[i].TimeStampDate + "<b> Altitude (m): </b>" + jsonData.mock_data[i].AltitudeQnh_meters +
-              "<b> AirSpeed (knots): </b>" + jsonData.mock_data[i].AirSpeed_knots + "<b> Vertical Speed (m/s): </b>" + jsonData.mock_data[i].VerticalSpeed_ms +
-              "<b> Normal Acceleration (g): </b>" + jsonData.mock_data[i].NormalAcceleration_g + "<b> Motor Power (v): </b>" + jsonData.mock_data[i].MotorPower_volts + "<br>";
-  }
-  document.getElementById('data').innerHTML = string; */
-  createGraph(jsonData);
-}
-
-function createGraph(jsonData) {
-
+  // Time Stamp dates
   let timeSorted = [];
-    for(var i = 0; i < jsonData.mock_data.length; i++) {
-      timeSorted.push(moment.utc(jsonData.mock_data[i].TimeStampDate));
-    }
+  let altData = [];
+  let aSpdData = [];
+  let vSpdData = [];
+  let nAccelData = [];
+  let mPowerData = [];
+
+  for(var i = 0; i < jsonData.mock_data.length; i++) {
+    timeSorted.push(moment.utc(jsonData.mock_data[i].TimeStampDate));
+  }
     timeSorted.sort();
 
+  for(var i = 0; i < jsonData.mock_data.length; i++) {
 
-  var altData = [];
-  for(var j = 0; j < jsonData.mock_data.length; j++) {
-    altData.push({t: timeSorted[j], y: jsonData.mock_data[j].AltitudeQnh_meters});
+    altData.push({t: timeSorted[i], y: jsonData.mock_data[i].AltitudeQnh_meters});
+    aSpdData.push({t: timeSorted[i], y: jsonData.mock_data[i].AirSpeed_knots});
+    vSpdData.push({t: timeSorted[i], y: jsonData.mock_data[i].VerticalSpeed_ms});
+    nAccelData.push({t: timeSorted[i], y: jsonData.mock_data[i].NormalAcceleration_g});
+    mPowerData.push({t: timeSorted[i], y: jsonData.mock_data[i].MotorPower_volts});
   }
 
-let altitudeChart = document.getElementById("altitudeChart").getContext('2d');
+  let allData = [timeSorted, altData, aSpdData, vSpdData, nAccelData, mPowerData];
 
-let altChart = new Chart(altitudeChart, {
-  type: 'line',
-  data: {
-    labels: timeSorted,
-    datasets: [{
-      label: 'Altitude Qnh (meters)',
-      data: altData,
-      fill: false,
-      borderColor: 'red',
-      borderWidth: '0.5'
-    }]
-  },
-  options: {
-    scales: {
-      yAxes: [{
-        ticks: {
-          beginAtZero: true
-        },
-        scaleLabel: {
-          display: true,
-          labelString: 'AltitudeQnh (meters)'
-        }
-      }],
-      xAxes: [{
-        display: true,
-        type: 'time',
-      }]
-    },
-    legend: {
-      postition: 'bottom',
-      display: false
-    }
-  }
-});
-
-var aSpdData = [];
-for(var j = 0; j < jsonData.mock_data.length; j++) {
-  aSpdData.push({t: timeSorted[j], y: jsonData.mock_data[j].AirSpeed_knots});
+  createGraphs(allData);
 }
 
-let airSpeedChart = document.getElementById("airSpeedChart").getContext('2d');
+function createGraphs(data) {
 
-let aSpdChart = new Chart(airSpeedChart, {
-  type: 'line',
-  data: {
-    labels: timeSorted,
-    datasets: [{
-      label: 'AirSpeed (knots)',
-      data: aSpdData,
-      fill: false,
-      borderColor: 'red',
-      borderWidth: '0.5'
-    }]
-  },
-  options: {
-    scales: {
-      yAxes: [{
-        ticks: {
-          beginAtZero: true
-        },
-        scaleLabel: {
-          display: true,
-          labelString: 'AirSpeed (knots)'
-        }
-      }],
-      xAxes: [{
-        display: true,
-        type: 'time',
-      }]
-    },
-    legend: {
-      postition: 'bottom',
-      display: false
-    }
+  let chartElements = ['altitudeChart','airSpeedChart', 'vertSpeedChart', 'nAccelChart', 'mPowerChart']
+  let chartLabels = ['Altitude Qnh (meters)', 'Air Speed (knots)', 'VerticalSpeed (ms)', 'Normal Acceleration (g)', 'Motor Power (volts)']
+
+  for(let i = 0; i < chartElements.length; i++) {
+    let chart = document.getElementById(chartElements[i]).getContext('2d');
+
+    let myChart = new Chart(chart, {
+      type: 'line',
+      data: chartData(chartLabels[i], data[0], data[i+1]),
+      options: chartOptions(chartLabels[i])
+    });
   }
-});
 
-var vSpdData = [];
-for(var j = 0; j < jsonData.mock_data.length; j++) {
-  vSpdData.push({t: timeSorted[j], y: jsonData.mock_data[j].VerticalSpeed_ms});
 }
 
-let vertSpeedChart = document.getElementById("vertSpeedChart").getContext('2d');
+/*var coll = document.getElementsByClassName("collapsible");
+var i;
 
-let vSpdChart = new Chart(vertSpeedChart, {
-  type: 'line',
-  data: {
-    labels: timeSorted,
-    datasets: [{
-      label: 'Vertical Speed (ms)',
-      data: vSpdData,
-      fill: false,
-      borderColor: 'red',
-      borderWidth: '0.5'
-    }]
-  },
-  options: {
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+  }); */
+
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.maxHeight){
+      content.style.maxHeight = null;
+    } else {
+      content.style.maxHeight = content.scrollHeight + "px";
+    }
+  });
+}
+
+function chartOptions(label) {
+
+  var chOptions = {
+    maintainAspectRatio: false,
     scales: {
       yAxes: [{
         ticks: {
@@ -152,7 +103,7 @@ let vSpdChart = new Chart(vertSpeedChart, {
         },
         scaleLabel: {
           display: true,
-          labelString: 'Vertical Speed (ms)'
+          labelString: label
         }
       }],
       xAxes: [{
@@ -165,6 +116,20 @@ let vSpdChart = new Chart(vertSpeedChart, {
       display: false
     }
   }
-});
 
+  return chOptions;
+}
+
+function chartData(label, x, y) {
+  var chData = {
+    labels: x,
+    datasets: [{
+      label: label,
+      data: y,
+      fill: false,
+      borderColor: 'red',
+      borderWidth: '0.5'
+    }]
+  }
+  return chData;
 }
