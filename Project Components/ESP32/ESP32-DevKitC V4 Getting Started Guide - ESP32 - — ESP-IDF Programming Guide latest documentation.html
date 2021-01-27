@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>ESP32-DevKitC V4 Getting Started Guide - ESP32 -  — ESP-IDF Programming Guide latest documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="ESP32-DevKitC%20V4%20Getting%20Started%20Guide%20-%20ESP32%20-%20%E2%80%94%20ESP-IDF%20Programming%20Guide%20latest%20documentation_files/documentation_options.js"></script>
+        <script type="text/javascript" src="ESP32-DevKitC%20V4%20Getting%20Started%20Guide%20-%20ESP32%20-%20%E2%80%94%20ESP-IDF%20Programming%20Guide%20latest%20documentation_files/jquery.js"></script>
+        <script type="text/javascript" src="ESP32-DevKitC%20V4%20Getting%20Started%20Guide%20-%20ESP32%20-%20%E2%80%94%20ESP-IDF%20Programming%20Guide%20latest%20documentation_files/underscore.js"></script>
+        <script type="text/javascript" src="ESP32-DevKitC%20V4%20Getting%20Started%20Guide%20-%20ESP32%20-%20%E2%80%94%20ESP-IDF%20Programming%20Guide%20latest%20documentation_files/doctools.js"></script>
+        <script type="text/javascript" src="ESP32-DevKitC%20V4%20Getting%20Started%20Guide%20-%20ESP32%20-%20%E2%80%94%20ESP-IDF%20Programming%20Guide%20latest%20documentation_files/language_data.js"></script>
+        <script type="text/javascript" src="ESP32-DevKitC%20V4%20Getting%20Started%20Guide%20-%20ESP32%20-%20%E2%80%94%20ESP-IDF%20Programming%20Guide%20latest%20documentation_files/clipboard.js"></script>
+        <script type="text/javascript" src="ESP32-DevKitC%20V4%20Getting%20Started%20Guide%20-%20ESP32%20-%20%E2%80%94%20ESP-IDF%20Programming%20Guide%20latest%20documentation_files/copybutton.js"></script>
+      <script type="text/javascript" src="ESP32-DevKitC%20V4%20Getting%20Started%20Guide%20-%20ESP32%20-%20%E2%80%94%20ESP-IDF%20Programming%20Guide%20latest%20documentation_files/theme.js"></script>
+
+    
+
+    
+    <script type="text/javascript">
+        DOCUMENTATION_OPTIONS.PAGENAME = 'hw-reference/esp32/get-started-devkitc';
+        DOCUMENTATION_OPTIONS.PROJECT_SLUG = 'esp-idf';
+        DOCUMENTATION_OPTIONS.VERSIONS_URL = 'https://dl.espressif.com/dl/esp-idf/idf_versions.js';
+        DOCUMENTATION_OPTIONS.LANGUAGES = ["en", "zh_CN"];
+        DOCUMENTATION_OPTIONS.IDF_TARGET = 'esp32';
+        DOCUMENTATION_OPTIONS.IDF_TARGETS = ["esp32", "esp32s2"]
+    </script>
+
+    <script type="text/javascript" src="ESP32-DevKitC%20V4%20Getting%20Started%20Guide%20-%20ESP32%20-%20%E2%80%94%20ESP-IDF%20Programming%20Guide%20latest%20documentation_files/idf_versions.js"></script>
+
+  
+  <link rel="stylesheet" href="ESP32-DevKitC%20V4%20Getting%20Started%20Guide%20-%20ESP32%20-%20%E2%80%94%20ESP-IDF%20Programming%20Guide%20latest%20documentation_files/theme.css" type="text/css">
+  <link rel="stylesheet" href="ESP32-DevKitC%20V4%20Getting%20Started%20Guide%20-%20ESP32%20-%20%E2%80%94%20ESP-IDF%20Programming%20Guide%20latest%20documentation_files/pygments.css" type="text/css">
+  <link rel="stylesheet" href="ESP32-DevKitC%20V4%20Getting%20Started%20Guide%20-%20ESP32%20-%20%E2%80%94%20ESP-IDF%20Programming%20Guide%20latest%20documentation_files/copybutton.css" type="text/css">
+  <link rel="stylesheet" href="ESP32-DevKitC%20V4%20Getting%20Started%20Guide%20-%20ESP32%20-%20%E2%80%94%20ESP-IDF%20Programming%20Guide%20latest%20documentation_files/theme_overrides.css" type="text/css">
+    <link rel="author" title="About these documents" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/about.html">
+    <link rel="index" title="Index" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/genindex.html">
+    <link rel="search" title="Search" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/search.html">
+    <link rel="next" title="ESP32-DevKitC V2 Getting Started Guide" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/hw-reference/esp32/get-started-devkitc-v2.html">
+    <link rel="prev" title="Get Started" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/index.html"> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/index.html" class="icon icon-home" alt="Documentation Home"> ESP-IDF Programming Guide
+          
+
+          
+            
+            <img src="ESP32-DevKitC%20V4%20Getting%20Started%20Guide%20-%20ESP32%20-%20%E2%80%94%20ESP-IDF%20Programming%20Guide%20latest%20documentation_files/espressif-logo.svg" class="logo" alt="Logo">
+          
+          </a>
+
+          
+            
+            <div class="version">
+              ESP32
+            </div>
+            
+
+            <div class="version" title="v4.3-dev-2586-g526f682">
+              
+                latest
+            </div>
+          
+
+
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs">
+    <input type="hidden" name="check_keywords" value="yes">
+    <input type="hidden" name="area" value="default">
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/index.html"><span class="toctree-expand"></span>Get Started</a><ul class="">
+<li class="toctree-l2"><a class="reference internal" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/index.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/index.html#what-you-need">What You Need</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/index.html#development-board-overviews"><span class="toctree-expand"></span>Development Board Overviews</a><ul class="">
+<li class="toctree-l3 current"><a class="reference internal current" href="#"><span class="toctree-expand"></span>ESP32-DevKitC</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#what-you-need">What You Need</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#functional-description">Functional Description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#power-supply-options">Power Supply Options</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#note-on-c15">Note on C15</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#start-application-development">Start Application Development</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#board-dimensions">Board Dimensions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#related-documents">Related Documents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/hw-reference/esp32/get-started-wrover-kit.html">ESP-WROVER-KIT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/hw-reference/esp32/get-started-pico-kit.html">ESP32-PICO-KIT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/hw-reference/esp32/get-started-ethernet-kit.html">ESP32-Ethernet-Kit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/hw-reference/esp32/user-guide-devkits-r-v1.1.html">ESP32-DevKit-S(-R)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/hw-reference/esp32/get-started-pico-kit-1.html">ESP32-PICO-KIT-1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/hw-reference/esp32/get-started-pico-devkitm-2.html">ESP32-PICO-DevKitM-2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/hw-reference/esp32/user-guide-devkitm-1.html">ESP32-DevKitM-1</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/index.html#installation-step-by-step">Installation Step by Step</a></li>
+<li class="toctree-l2"><a class="reference internal" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/index.html#step-1-install-prerequisites">Step 1. Install prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/index.html#step-2-get-esp-idf">Step 2. Get ESP-IDF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/index.html#step-3-set-up-the-tools">Step 3. Set up the tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/index.html#step-4-set-up-the-environment-variables">Step 4. Set up the environment variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/index.html#step-5-start-a-project">Step 5. Start a Project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/index.html#step-6-connect-your-device">Step 6. Connect Your Device</a></li>
+<li class="toctree-l2"><a class="reference internal" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/index.html#step-7-configure">Step 7. Configure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/index.html#step-8-build-the-project">Step 8. Build the Project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/index.html#step-9-flash-onto-the-device">Step 9. Flash onto the Device</a></li>
+<li class="toctree-l2"><a class="reference internal" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/index.html#step-10-monitor">Step 10. Monitor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/index.html#updating-esp-idf">Updating ESP-IDF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/index.html#related-documents">Related Documents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/hw-reference/index.html">H/W Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-guides/index.html">API Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/libraries-and-frameworks/index.html">Libraries and Frameworks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/contribute/index.html">Contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/versions.html">Versions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/resources.html">Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/COPYRIGHT.html">Copyrights</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/languages.html">语言/Languages</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://readthedocs.com/projects/espressif-esp-idf/downloads/">Guide Downloads</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/index.html">ESP-IDF Programming Guide</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/index.html" class="icon icon-home"></a> »</li>
+        
+          <li><a href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/index.html">Get Started</a> »</li>
+        
+      <li>ESP32-DevKitC V4 Getting Started Guide</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <a href="https://github.com/espressif/esp-idf/blob/526f682/docs/en/hw-reference/esp32/get-started-devkitc.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="esp32-devkitc-v4-getting-started-guide">
+<h1>ESP32-DevKitC V4 Getting Started Guide<a class="headerlink" href="#esp32-devkitc-v4-getting-started-guide" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/hw-reference/esp32/get-started-devkitc.html">[中文]</a></p>
+<p>This guide shows how to start using the ESP32-DevKitC V4 development 
+board. For description of other versions of ESP32-DevKitC check <a class="reference internal" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/hw-reference/index.html"><span class="doc">ESP32 Hardware Reference</span></a>.</p>
+<div class="section" id="what-you-need">
+<h2>What You Need<a class="headerlink" href="#what-you-need" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>ESP32-DevKitC V4 board</p></li>
+<li><p>USB A / micro USB B cable</p></li>
+<li><p>Computer running Windows, Linux, or macOS</p></li>
+</ul>
+<p>You can skip the introduction sections and go directly to Section <a class="reference internal" href="#start-application-development">Start Application Development</a>.</p>
+</div>
+<div class="section" id="overview">
+<span id="devkitc-overview"></span><h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>ESP32-DevKitC V4 is a small-sized ESP32-based development board produced by <a class="reference external" href="https://espressif.com/">Espressif</a>.
+ Most of the I/O pins are broken out to the pin headers on both sides 
+for easy interfacing. Developers can either connect peripherals with 
+jumper wires or mount ESP32-DevKitC V4 on a breadboard.</p>
+<p>To cover a wide range of user requirements, the following versions of ESP32-DevKitC V4 are available:</p>
+<ul>
+<li><p>different ESP32 modules</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><a class="reference external" href="https://www.espressif.com/sites/default/files/documentation/esp32-wroom-32e_esp32-wroom-32ue_datasheet_en.pdf">ESP32-WROOM-32E</a></p></li>
+<li><p><a class="reference external" href="https://www.espressif.com/sites/default/files/documentation/esp32-wroom-32e_esp32-wroom-32ue_datasheet_en.pdf">ESP32-WROOM-32UE</a></p></li>
+<li><p><a class="reference external" href="https://www.espressif.com/sites/default/files/documentation/esp32-wroom-32d_esp32-wroom-32u_datasheet_en.pdf">ESP32-WROOM-32D</a></p></li>
+<li><p><a class="reference external" href="https://www.espressif.com/sites/default/files/documentation/esp32-wroom-32d_esp32-wroom-32u_datasheet_en.pdf">ESP32-WROOM-32U</a></p></li>
+<li><p><a class="reference external" href="https://www.espressif.com/sites/default/files/documentation/esp32-solo-1_datasheet_en.pdf">ESP32-SOLO-1</a></p></li>
+<li><p><a class="reference external" href="https://www.espressif.com/sites/default/files/documentation/esp32-wrover-e_esp32-wrover-ie_datasheet_en.pdf">ESP32-WROVER-E</a></p></li>
+<li><p><a class="reference external" href="https://www.espressif.com/sites/default/files/documentation/esp32-wrover-e_esp32-wrover-ie_datasheet_en.pdf">ESP32-WROVER-IE</a></p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>male or female pin headers.</p></li>
+</ul>
+<p>For details please refer to <a class="reference external" href="https://www.espressif.com/sites/default/files/documentation/espressif_products_ordering_information_en.pdf">Espressif Product Ordering Information</a>.</p>
+</div>
+<div class="section" id="functional-description">
+<h2>Functional Description<a class="headerlink" href="#functional-description" title="Permalink to this headline">¶</a></h2>
+<p>The following figure and the table below describe the key components, interfaces and controls of the ESP32-DevKitC V4 board.</p>
+<div class="align-center figure" id="id1">
+<span id="get-started-esp32-devkitc-board-front"></span><img alt="ESP32-DevKitC V4 with ESP-WROOM-32 module soldered" src="ESP32-DevKitC%20V4%20Getting%20Started%20Guide%20-%20ESP32%20-%20%E2%80%94%20ESP-IDF%20Programming%20Guide%20latest%20documentation_files/esp32-devkitc-functional-overview.jpg">
+<p class="caption"><span class="caption-text">ESP32-DevKitC V4 with ESP32-WROOM-32 module soldered</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+<div class="wy-table-responsive"><table class="docutils align-default">
+<colgroup>
+<col style="width: 10%">
+<col style="width: 90%">
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Key Component</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>ESP32-WROOM-32</p></td>
+<td><p>A module with ESP32 at its core.</p></td>
+</tr>
+<tr class="row-odd"><td><p>EN</p></td>
+<td><p>Reset button.</p></td>
+</tr>
+<tr class="row-even"><td><p>Boot</p></td>
+<td><p>Download button. Holding down <strong>Boot</strong> and then pressing <strong>EN</strong> initiates Firmware Download mode for downloading firmware through the serial port.</p></td>
+</tr>
+<tr class="row-odd"><td><p>USB-to-UART Bridge</p></td>
+<td><p>Single USB-UART bridge chip provides transfer rates of up to 3 Mbps.</p></td>
+</tr>
+<tr class="row-even"><td><p>Micro USB Port</p></td>
+<td><p>USB interface. Power supply for the board as well as the communication interface between a computer and the ESP32 module.</p></td>
+</tr>
+<tr class="row-odd"><td><p>5V Power On LED</p></td>
+<td><p>Turns on when the USB or an external 5V power supply is connected to the board. For details see the schematics in <a class="reference internal" href="#related-documents">Related Documents</a>.</p></td>
+</tr>
+<tr class="row-even"><td><p>I/O</p></td>
+<td><p>Most of the pins on the ESP module are broken out to the pin 
+headers on the board. You can program ESP32 to enable multiple functions
+ such as PWM, ADC, DAC, I2C, I2S, SPI, etc.</p></td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<div><div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The pins D0, D1, D2, D3, CMD and CLK are used internally for 
+communication between ESP32 and SPI flash memory. They are grouped on 
+both sides near the USB connector. Avoid using these pins, as it may 
+disrupt access to the SPI flash memory / SPI RAM.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The pins GPIO16 and GPIO17 are available for use only on the boards 
+with the modules ESP32-WROOM and ESP32-SOLO-1. The boards with 
+ESP32-WROVER modules have the pins reserved for internal use.</p>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="power-supply-options">
+<h2>Power Supply Options<a class="headerlink" href="#power-supply-options" title="Permalink to this headline">¶</a></h2>
+<p>There are three mutually exclusive ways to provide power to the board:</p>
+<ul class="simple">
+<li><p>Micro USB port, default power supply</p></li>
+<li><p>5V / GND header pins</p></li>
+<li><p>3V3 / GND header pins</p></li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The power supply must be provided using <strong>one and only one of the options above</strong>, otherwise the board and/or the power supply source can be damaged.</p>
+</div>
+</div>
+<div class="section" id="note-on-c15">
+<h2>Note on C15<a class="headerlink" href="#note-on-c15" title="Permalink to this headline">¶</a></h2>
+<p>The component C15 may cause the following issues on earlier ESP32-DevKitC V4 boards:</p>
+<ul class="simple">
+<li><p>The board may boot into Download mode</p></li>
+<li><p>If you output clock on GPIO0, C15 may impact the signal</p></li>
+</ul>
+<p>In case these issues occur, please remove the component. The figure below shows C15 highlighted in yellow.</p>
+<div class="align-center figure" id="id2">
+<a class="reference internal image-reference" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/_images/esp32-devkitc-c15-location.png"><img alt="Location of C15 (colored yellow) on ESP32-DevKitC V4 board" src="ESP32-DevKitC%20V4%20Getting%20Started%20Guide%20-%20ESP32%20-%20%E2%80%94%20ESP-IDF%20Programming%20Guide%20latest%20documentation_files/esp32-devkitc-c15-location.png" style="width: 30%;"></a>
+<p class="caption"><span class="caption-text">Location of C15 (yellow) on ESP32-DevKitC V4 board</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+<div class="section" id="start-application-development">
+<h2>Start Application Development<a class="headerlink" href="#start-application-development" title="Permalink to this headline">¶</a></h2>
+<p>Before powering up your ESP32-DevKitC V4, please make sure that the board is in good condition with no obvious signs of damage.</p>
+<p>After that, proceed to <a class="reference internal" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/index.html"><span class="doc">Get Started</span></a>, where Section <a class="reference internal" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/index.html#get-started-step-by-step"><span class="std std-ref">Installation Step by Step</span></a> will quickly help you set up the development environment and then flash an example project onto your board.</p>
+</div>
+<div class="section" id="board-dimensions">
+<h2>Board Dimensions<a class="headerlink" href="#board-dimensions" title="Permalink to this headline">¶</a></h2>
+<div class="align-center figure" id="id3">
+<img alt="ESP32 DevKitC board dimensions - back" src="ESP32-DevKitC%20V4%20Getting%20Started%20Guide%20-%20ESP32%20-%20%E2%80%94%20ESP-IDF%20Programming%20Guide%20latest%20documentation_files/esp32-devkitc-dimensions-back.jpg">
+<p class="caption"><span class="caption-text">ESP32 DevKitC board dimensions - back</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+<div class="section" id="related-documents">
+<h2>Related Documents<a class="headerlink" href="#related-documents" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://dl.espressif.com/dl/schematics/esp32_devkitc_v4-sch.pdf">ESP32-DevKitC V4 schematics</a> (PDF)</p></li>
+<li><p><a class="reference external" href="https://www.espressif.com/sites/default/files/documentation/esp32_datasheet_en.pdf">ESP32 Datasheet</a> (PDF)</p></li>
+<li><p><a class="reference external" href="https://espressif.com/sites/default/files/documentation/esp32-wroom-32_datasheet_en.pdf">ESP32-WROOM-32 Datasheet</a> (PDF)</p></li>
+<li><p><a class="reference external" href="https://www.espressif.com/sites/default/files/documentation/esp32-wroom-32d_esp32-wroom-32u_datasheet_en.pdf">ESP32-WROOM-32D &amp; ESP32-WROOM-32U Datasheet</a> (PDF)</p></li>
+<li><p><a class="reference external" href="https://espressif.com/sites/default/files/documentation/esp32-wrover_datasheet_en.pdf">ESP32-WROVER Datasheet</a> (PDF)</p></li>
+<li><p><a class="reference external" href="https://www.espressif.com/sites/default/files/documentation/esp32-wrover-b_datasheet_en.pdf">ESP32-WROVER-B Datasheet</a> (PDF)</p></li>
+<li><p><a class="reference external" href="https://www.espressif.com/sites/default/files/documentation/espressif_products_ordering_information_en.pdf">Espressif Product Ordering Information</a> (PDF)</p></li>
+</ul>
+<div class="toctree-wrapper compound">
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+           <div class="articleComments">
+            
+<p style="text-align:center"><a href="https://www.espressif.com/en/company/documents/documentation_feedback?docId=4287&amp;sections=ESP32-DevKitC%20V4%20Getting%20Started%20Guide%20(hw-reference/esp32/get-started-devkitc)&amp;version=esp32%20latest%20(v4.3-dev-2586-g526f682)">Provide feedback about this document</a></p>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/hw-reference/esp32/get-started-devkitc-v2.html" class="btn btn-neutral float-right" title="ESP32-DevKitC V2 Getting Started Guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/index.html" class="btn btn-neutral float-left" title="Get Started" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr>
+
+  <div role="contentinfo">
+    <p>
+        
+        © Copyright 2016 - 2020, Espressif Systems (Shanghai) CO., LTD
+
+    </p>
+  </div>
+    
+    
+      Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_idf_theme">theme</a> provided by <a href="https://readthedocs.org/">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Switch Version </span>
+    v: latest
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    
+      <dl>
+        <dt>Targets</dt>
+        
+          
+            <strong>
+          
+            <dd><a href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/hw-reference/esp32/get-started-devkitc.html">ESP32</a></dd>
+          
+            </strong>
+          
+          
+          
+            <dd><a href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32s2/hw-reference/esp32/get-started-devkitc.html">ESP32-S2</a></dd>
+          
+          
+      </dl>
+    
+    
+      <dl>
+        <dt>Languages</dt>
+        
+          
+            <strong>
+              
+              
+              <dd><a href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/hw-reference/esp32/get-started-devkitc.html">en</a></dd>
+              
+          
+            </strong>
+          
+        
+          
+            <strong>
+              
+              
+              <dd><a href="https://docs.espressif.com/projects/esp-idf/zh_CN/latest/esp32/hw-reference/esp32/get-started-devkitc.html">zh_CN</a></dd>
+              
+          
+            </strong>
+          
+        
+      </dl>
+    
+    <dl id="versions">
+      <dt>Versions</dt>
+      
+        <strong>
+      
+      <!-- Latest version URL may not be correct depending on whether that version has idf_target as part of the URL format compared to this version.
+           JavaScript will update it on page load -->
+      
+      <dd id="version-latest"><a href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/hw-reference/esp32/get-started-devkitc.html">latest</a></dd>
+      
+      
+        </strong>
+      
+
+      <!-- Stable version URL may not be correct depending on whether that version has idf_target as part of the URL format compared to this version.
+           JavaScript will update it on page load -->
+      
+      <dd id="version-stable"><a href="https://docs.espressif.com/projects/esp-idf/en/stable/esp32/hw-reference/esp32/get-started-devkitc.html">stable</a></dd>
+      
+    <dd><a href="https://docs.espressif.com/projects/esp-idf/en/v4.2/esp32/hw-reference/esp32/get-started-devkitc.html">v4.2</a></dd><dd><a href="https://docs.espressif.com/projects/esp-idf/en/v4.1/hw-reference/esp32/get-started-devkitc.html">v4.1</a></dd><dd><a href="https://docs.espressif.com/projects/esp-idf/en/v4.0.2/hw-reference/esp32/get-started-devkitc.html">v4.0.2</a></dd><dd><a href="https://docs.espressif.com/projects/esp-idf/en/v3.3.4/hw-reference/esp32/get-started-devkitc.html">v3.3.4</a></dd></dl>
+    <dl id="versions-prerelease">
+      <dt>Prereleases</dt>
+    <dd><a href="https://docs.espressif.com/projects/esp-idf/en/release-v4.2/esp32/hw-reference/esp32/get-started-devkitc.html">release-v4.2</a></dd><dd><a href="https://docs.espressif.com/projects/esp-idf/en/release-v4.1/hw-reference/esp32/get-started-devkitc.html">release-v4.1</a></dd><dd><a href="https://docs.espressif.com/projects/esp-idf/en/release-v4.0/hw-reference/esp32/get-started-devkitc.html">release-v4.0</a></dd><dd><a href="https://docs.espressif.com/projects/esp-idf/en/release-v3.3/hw-reference/esp32/get-started-devkitc.html">release-v3.3</a></dd></dl>
+    <dl id="versions-old">
+      <dt>Old Versions</dt>
+    <dd><a href="https://docs.espressif.com/projects/esp-idf/en/v4.0.1/hw-reference/esp32/get-started-devkitc.html">v4.0.1</a></dd><dd><a href="https://docs.espressif.com/projects/esp-idf/en/v4.0/hw-reference/esp32/get-started-devkitc.html">v4.0</a></dd><dd><a href="https://docs.espressif.com/projects/esp-idf/en/v3.3.3/hw-reference/esp32/get-started-devkitc.html">v3.3.3</a></dd><dd><a href="https://docs.espressif.com/projects/esp-idf/en/v3.3.2/hw-reference/esp32/get-started-devkitc.html">v3.3.2</a></dd><dd><a href="https://docs.espressif.com/projects/esp-idf/en/v3.3.1/hw-reference/esp32/get-started-devkitc.html">v3.3.1</a></dd><dd><a href="https://docs.espressif.com/projects/esp-idf/en/v3.3/hw-reference/esp32/get-started-devkitc.html">v3.3</a></dd><dd><a href="https://docs.espressif.com/projects/esp-idf/en/v3.2.5/hw-reference/esp32/get-started-devkitc.html">v3.2.5</a></dd><dd><a href="https://docs.espressif.com/projects/esp-idf/en/v3.1.7/hw-reference/esp32/get-started-devkitc.html">v3.1.7</a></dd></dl>
+
+    <dl>
+      <dt>Downloads</dt>
+        <dd><a href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/esp-idf-en-v4.3-dev-2586-g526f682-esp32.pdf">PDF</a></dd>
+    </dl>
+
+    <dl>
+      <dt>ESP-IDF Programming Guide</dt>
+      <dd>
+        <a href="https://github.com/espressif/esp-idf">Project Home</a>
+      </dd>
+    </dl>
+  </div>
+</div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+
+</body></html>
