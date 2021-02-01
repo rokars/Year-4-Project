@@ -1,0 +1,4 @@
+4 spi busses
+2 usable hspi and vspi
+
+Notice:* Pins SCK/CLK, SDO/SD0, SDI/SD1, SHD/SD2, SWP/SD3 and SCS/CMD, namely, GPIO6 to GPIO11 are connectedto the integrated SPI flash integrated on the module and are not recommended for other uses.

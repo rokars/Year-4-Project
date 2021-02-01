@@ -1,0 +1,62 @@
+Breakout Board Datasheet:
+
+SD cards are 3.3v only, can be 100mA or more,
+SPI Communication,
+use https://www.sdcard.org/downloads/formatter/ instead of OS formatter,
+module takes care of voltage regulation and level shifter.
+
+SD card only supports only 8.3 format for file names
+
+ESP (VSPI)        -    Breakout
+I05 - CS0         -      CS
+GPIO17 - CD       -      CD
+IO18 - CLK        -      CLK
+IO19 - Q (MISO)   -      DO
+IO23 - D (MOSI)   -      DI
+
+Example Code Notes:
+
+bool cardInit(chipSelect);
+
+// make a string for assembling the data to log:
+String dataString = "";   ?
+
+// open the file. note that only one file can be open at a time,
+// so you have to close this one before opening another.
+File dataFile = SD.open("datalog.txt", FILE_WRITE);                     File dataFile = SD.open("datalog.txt");
+
+// if the file is available, write to it:
+if (dataFile) {
+  dataFile.println(dataString);                                           while (dataFile.available()) {
+  dataFile.close();                                                         Serial.write(dataFile.read());
+  // print to the serial port too:
+  Serial.println(dataString);
+}
+// if the file isn't open, pop up an error:
+else {
+  Serial.println("error opening datalog.txt");
+}
+
+// open a new file and immediately close it:
+Serial.println("Creating example.txt...");
+myFile = SD.open("example.txt", FILE_WRITE);
+myFile.close();
+
+// Check to see if the file exists:
+if (SD.exists("example.txt")) {
+  Serial.println("example.txt exists.");
+} else {
+  Serial.println("example.txt doesn't exist.");
+}
+
+// delete the file:
+Serial.println("Removing example.txt...");
+SD.remove("example.txt");
+
+if (SD.exists("example.txt")) {
+  Serial.println("example.txt exists.");
+} else {
+  Serial.println("example.txt doesn't exist.");
+}
+
+insert header/footer functions
