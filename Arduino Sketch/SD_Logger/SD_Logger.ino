@@ -7,7 +7,6 @@
 
 #include <SPI.h>
 #include <SD.h>
-#include <string.h>
 
 const int chipSelPin = 5;
 const int cardDetPin = 17;
@@ -16,6 +15,7 @@ bool jsonWriteHeader(char[], char[]);
 bool jsonWriteData(char []);
 bool jsonWriteFooter(char []);
 bool cardInit(int, int);
+File openSDFile(char [], char);
 
 void setup() {
   // put your setup code here, to run once:
@@ -27,18 +27,16 @@ void setup() {
   pinMode(cardDetPin, INPUT);
 
   cardInit();
+  jsonWriteHeader("Kappa123", "testing");
+  jsonWriteData("Kappa123");
+  jsonWriteFooter("Kappa123");
 
-  if (jsonWriteHeader("HelloFile", "FebTest")) {
-    File myFileR;
-    myFileR = SD.open("/HelloFil.txt");
-    if (myFileR) {
-      Serial.println("Reading: ");
-    }
-    while (myFileR.available()) {
-      Serial.write(myFileR.read());
-    }
-    myFileR.close();
+  File myFileR;
+  myFileR = openSDFile("Kappa123", 'R');
+  while (myFileR.available()) {
+    Serial.write(myFileR.read());
   }
+  myFileR.close();
 }
 
 void loop() {
@@ -71,73 +69,86 @@ bool cardInit() {
   }
 }
 
-bool jsonWriteHeader(char fileName[], char dataTitle[]) {
+File openSDFile(char fileName[], char operation) {
 
-  File dataFile;
+  int fileNameMax = 8, fileExtwNull;
   char dataFileName[14] = {'/'};   //1 + 8 + 4 = 13 size + null = 14
   //char pre = '/';
   char post[] = ".txt";
 
-  strncat(dataFileName, fileName, 8);
-  strcat(dataFileName, post);
+  strncpy(&dataFileName[1], fileName, fileNameMax);   //strcat searches for null
+  strncpy(&dataFileName[9], post, sizeof(dataFileName - fileExtwNull));
 
+  File dataFile;
   if (cardDetect()) {
-    dataFile = SD.open(dataFileName, FILE_WRITE);
+    switch (operation) {
+      case 'W':
+        dataFile = SD.open(dataFileName, FILE_WRITE);
+        Serial.println("WRITING: ");
+        break;
+      case 'A':
+        dataFile = SD.open(dataFileName, FILE_APPEND);
+        Serial.println("APPENDING: ");
+        break;
+      default:
+        dataFile = SD.open(dataFileName);
+        Serial.println("READING: ");
+    }
+
     if (!dataFile) {
       Serial.printf("Error opening file %s", dataFileName);
     } else {
-      dataFile.println("{");
-      dataFile.printf("\t\"%s\": [", dataTitle);
-  
-      dataFile.close();
-  
-      jsonWriteData(dataFileName);
-  
-      return true;
+      return dataFile;
     }
   }
 }
 
+bool jsonWriteHeader(char fileName[], char dataTitle[]) {
+
+  File dataFile = openSDFile(fileName, 'W');
+
+  dataFile.println("{");
+  dataFile.printf("\t\"%s\": [", dataTitle);
+
+  dataFile.close();
+
+  return true;
+}
+
+
 bool jsonWriteData(char FileName[]) {
 
-  File dataFile = SD.open(FileName, FILE_APPEND);
-  if (!dataFile) {
-    Serial.println("Error opening file");
-  } else {
-    for (int i = 0; i < 5; i++) {
-      if (i == 0) {
-        dataFile.println("{");
-      } else
-        dataFile.println("\t\t{");
+  File dataFile = openSDFile(FileName, 'A');
 
-      dataFile.println("\t\t\t\"TimeStampDate\": \"2021-01-31T14:22:01Z\",");
-      dataFile.println("\t\t\t\"AltitudeQnh_meters\": 15,");
-      dataFile.println("\t\t\t\"AirSpeed_knots\": 5,");
-      dataFile.println("\t\t\t\"VerticalSpeed_ms\": 1.2,");
-      dataFile.println("\t\t\t\"NormalAcceleration_g\": 2.4,");
-      dataFile.println("\t\t\t\"MotorPower_volts\": 7.4");
+  for (int i = 0; i < 5; i++) {
+    if (i == 0) {
+      dataFile.println("{");
+    } else
+      dataFile.println("\t\t{");
 
-      if (i < 4) {
-        dataFile.println("\t\t},");
-      } else
-        dataFile.println("\t\t}");
-    }
-    dataFile.close();
+    dataFile.println("\t\t\t\"TimeStampDate\": \"2021-01-31T14:22:01Z\",");
+    dataFile.println("\t\t\t\"AltitudeQnh_meters\": 15,");
+    dataFile.println("\t\t\t\"AirSpeed_knots\": 5,");
+    dataFile.println("\t\t\t\"VerticalSpeed_ms\": 1.2,");
+    dataFile.println("\t\t\t\"NormalAcceleration_g\": 2.4,");
+    dataFile.println("\t\t\t\"MotorPower_volts\": 7.4");
 
-    jsonWriteFooter(FileName);
-
-    return true;
+    if (i < 4) {
+      dataFile.println("\t\t},");
+    } else
+      dataFile.println("\t\t}");
   }
+  dataFile.close();
+  
+  return true;
 }
 
 bool jsonWriteFooter(char FileName[]) {
 
-  File dataFile = SD.open(FileName, FILE_APPEND);
-  if (!dataFile) {
-    Serial.printf("Error opening file");
-  } else {
-    dataFile.print("\t]\n\r}");
-    dataFile.close();
-  }
+  File dataFile = openSDFile(FileName, 'A');
+
+  dataFile.print("\t]\n\r}");
+  dataFile.close();
+  
   return true;
 }
