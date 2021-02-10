@@ -18,7 +18,7 @@ class BMP3XX_Sensor
     BMP3XX_Sensor(uint8_t address);
     bool BMP3XX_Board_Init();
     bool BMP388_Command_Ready();
-    void BMP3XX_Trim_Data_Verify();
+    void BMP3XX_Trim_Data_Verify(uint8_t arr[]);
     void BMP388_Compensate_Temperature(uint32_t uncomp_temp);
 
 

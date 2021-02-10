@@ -1,0 +1,19 @@
+
+/*
+  I2C_Transmit.h - Library for sending and receiving
+  data through I2C protocol,
+  Created by Rokas Cesiunas, 10 FEB 2021.
+*/
+
+#ifndef I2C_TRANSMIT_H
+#define I2C_TRANSMIT_H
+
+#include "Arduino.h"
+#include <Wire.h>
+#include <cstdint>
+
+bool I2C_Send_Data(uint8_t add, uint8_t reg, uint8_t dat);
+
+bool I2C_Read_ByteData(uint8_t add, uint8_t reg);
+
+#endif

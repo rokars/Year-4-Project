@@ -7,6 +7,7 @@
 
 #include "Arduino.h"
 #include "BMP3XX_Sensor.h"
+#include "I2C_Transmit.h"
 #include <Wire.h>
 #include <cstdint>
 
@@ -18,36 +19,16 @@ BMP3XX_Sensor::BMP3XX_Sensor(uint8_t address) {
 bool BMP3XX_Sensor::BMP3XX_Board_Init() {
 
   //  Soft reset sensor to erase any possible old settings
-  Wire.beginTransmission(I2C_Address);
-  Wire.write(byte(BMP388_CMD));
-  Wire.write(byte(BMP388_softreset));
-  if (Wire.endTransmission() > 0) {
-    Serial.printf("\n\r *** Error Connecting to 0x%x *** \n\r", I2C_Address);
-    return false;
-  }
-  else {
-    Serial.printf("\n\rPerformed softreset on BMP sensor 0x%x \n\r", I2C_Address);
-    delay(5);
-  }
+  I2C_Send_Data(I2C_Address, BMP388_CMD, BMP388_softreset);
+  delay(5);
+  // TO-DO check por register and cmd ready register
 
-  uint8_t dataIn;
-
+  uint8_t dataIn[1];
   // Read chip id number to ensure good communication
-  Wire.beginTransmission(I2C_Address);
-  Wire.write(byte(BMP388_CHIP_ID));
-  if (Wire.endTransmission(false) > 0) { // do not send stop messsage
-    Serial.println("\n\r *** CHIP ID Read fail no ack \n\r");
+  dataIn[0] = I2C_Read_ByteData(I2C_Address, BMP388_CHIP_ID);
+  if (dataIn[0] != BMP388_CHIP_ID_NO) {
+    Serial.printf("\n\rRead incorrect Chip ID 0x%x stopping\n\r", dataIn);
     return false;
-  }
-  else {
-    Wire.requestFrom(I2C_Address, (uint8_t)1);
-    if (Wire.available() == 1) {
-      dataIn = Wire.read();
-      if (dataIn != BMP388_CHIP_ID_NO) {
-        Serial.printf("\n\rRead incorrect Chip ID 0x%x stopping\n\r", dataIn);
-        return false;
-      }
-    }
   }
 
   //  Read Trimming Coefficients from Register   //
@@ -68,37 +49,38 @@ bool BMP3XX_Sensor::BMP3XX_Board_Init() {
       trim_data[i] = Wire.read();
     }
   }
-  BMP3XX_Trim_Data_Verify();
+  BMP3XX_Trim_Data_Verify(trim_data);
   return true;
 }
 
 bool BMP3XX_Sensor::BMP388_Command_Ready() {
 
-  uint8_t STATUS;
+  /*uint8_t STATUS;
 
-  Wire.begin(I2C_Address);
-  Wire.write(byte(0x03));
-  Wire.endTransmission();
+    Wire.begin(I2C_Address);
+    Wire.write(byte(0x03));
+    Wire.endTransmission();
 
-  Wire.requestFrom(byte(I2C_Address), (uint8_t)1);
-  if (Wire.available() == 1) {
+    Wire.requestFrom(byte(I2C_Address), (uint8_t)1);
+    if (Wire.available() == 1) {
     STATUS = Wire.read();
-  }
-  STATUS = STATUS >> 4;
-  if ( STATUS & 0b0001 == 1) {
+    }
+    STATUS = STATUS >> 4;
+    if ( STATUS & 0b0001 == 1) {
     return true;
-  }
-  else
+    }
+    else
     return false;
+  */
 }
 
-void BMP3XX_Sensor::BMP3XX_Trim_Data_Verify() {
+void BMP3XX_Sensor::BMP3XX_Trim_Data_Verify(uint8_t arr[]) {
 
-  /*for (byte i = 0; i < BMP388_CALIB_DATA_LEN; i++) {
-    Serial.printf("NVM_TRIM_DATA[%d]: 0x%x [ ", i, trimming_data[i]);
-    Serial.print(trimming_data[i], BIN);
+  for (byte i = 0; i < BMP388_CALIB_DATA_LENGHT; i++) {
+    Serial.printf("NVM_TRIM_DATA[%d]: 0x%x [ ", i, arr[i]);
+    Serial.print(arr[i], BIN);
     Serial.printf(" ]\n\r");
-    }*/
+    }
 }
 
 void BMP3XX_Sensor::BMP388_Compensate_Temperature(uint32_t uncomp_temp) {
