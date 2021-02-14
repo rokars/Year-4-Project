@@ -1,0 +1,13 @@
+﻿  Source.cpp
+C:\Users\cesiu\OneDrive - GMIT\y4\Project\Year-4-Project\Arduino Sketch\pointer\Source.cpp(28,9): warning C4477: 'printf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'int *'
+C:\Users\cesiu\OneDrive - GMIT\y4\Project\Year-4-Project\Arduino Sketch\pointer\Source.cpp(31,9): warning C4477: 'printf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'int *'
+C:\Users\cesiu\OneDrive - GMIT\y4\Project\Year-4-Project\Arduino Sketch\pointer\Source.cpp(55,9): warning C4477: 'printf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'int *'
+C:\Users\cesiu\OneDrive - GMIT\y4\Project\Year-4-Project\Arduino Sketch\pointer\Source.cpp(56,9): warning C4477: 'printf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'int *'
+C:\Users\cesiu\OneDrive - GMIT\y4\Project\Year-4-Project\Arduino Sketch\pointer\Source.cpp(60,9): warning C4477: 'printf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'char *'
+C:\Users\cesiu\OneDrive - GMIT\y4\Project\Year-4-Project\Arduino Sketch\pointer\Source.cpp(61,9): warning C4477: 'printf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'char *'
+C:\Users\cesiu\OneDrive - GMIT\y4\Project\Year-4-Project\Arduino Sketch\pointer\Source.cpp(67,9): warning C4477: 'printf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'void *'
+C:\Users\cesiu\OneDrive - GMIT\y4\Project\Year-4-Project\Arduino Sketch\pointer\Source.cpp(90,10): warning C4477: 'printf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'int *'
+C:\Users\cesiu\OneDrive - GMIT\y4\Project\Year-4-Project\Arduino Sketch\pointer\Source.cpp(91,10): warning C4477: 'printf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'int *'
+C:\Users\cesiu\OneDrive - GMIT\y4\Project\Year-4-Project\Arduino Sketch\pointer\Source.cpp(114,9): warning C4477: 'printf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'int *'
+C:\Users\cesiu\OneDrive - GMIT\y4\Project\Year-4-Project\Arduino Sketch\pointer\Source.cpp(114,9): warning C4477: 'printf' : format string '%d' requires an argument of type 'int', but variadic argument 2 has type 'int *'
+  pointer.vcxproj -> C:\Users\cesiu\OneDrive - GMIT\y4\Project\Year-4-Project\Arduino Sketch\pointer\Debug\pointer.exe

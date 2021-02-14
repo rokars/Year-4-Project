@@ -23,6 +23,31 @@ NVM_TRIM_DATA[18]: 0x3f [ 111111 ]			--P9_MSB
 NVM_TRIM_DATA[19]: 0xd [ 1101 ]				--P10
 NVM_TRIM_DATA[20]: 0xc4 [ 11000100 ]			--P11
 
+
+ Read trimming data OK
+NVM_TRIM_DATA[0]: decimal [90], hex: [0x5A], binary: [1011010] 
+NVM_TRIM_DATA[1]: decimal [109], hex: [0x6D], binary: [1101101] 
+NVM_TRIM_DATA[2]: decimal [4], hex: [0x4], binary: [100] 
+NVM_TRIM_DATA[3]: decimal [72], hex: [0x48], binary: [1001000] 
+NVM_TRIM_DATA[4]: decimal [246], hex: [0xF6], binary: [11110110] 
+NVM_TRIM_DATA[5]: decimal [86], hex: [0x56], binary: [1010110] 
+NVM_TRIM_DATA[6]: decimal [1], hex: [0x1], binary: [1] 
+NVM_TRIM_DATA[7]: decimal [118], hex: [0x76], binary: [1110110] 
+NVM_TRIM_DATA[8]: decimal [247], hex: [0xF7], binary: [11110111] 
+NVM_TRIM_DATA[9]: decimal [35], hex: [0x23], binary: [100011] 
+NVM_TRIM_DATA[10]: decimal [0], hex: [0x0], binary: [0] 
+NVM_TRIM_DATA[11]: decimal [182], hex: [0xB6], binary: [10110110] 
+NVM_TRIM_DATA[12]: decimal [97], hex: [0x61], binary: [1100001] 
+NVM_TRIM_DATA[13]: decimal [237], hex: [0xED], binary: [11101101] 
+NVM_TRIM_DATA[14]: decimal [118], hex: [0x76], binary: [1110110] 
+NVM_TRIM_DATA[15]: decimal [243], hex: [0xF3], binary: [11110011] 
+NVM_TRIM_DATA[16]: decimal [246], hex: [0xF6], binary: [11110110] 
+NVM_TRIM_DATA[17]: decimal [153], hex: [0x99], binary: [10011001] 
+NVM_TRIM_DATA[18]: decimal [63], hex: [0x3F], binary: [111111] 
+NVM_TRIM_DATA[19]: decimal [13], hex: [0xD], binary: [1101] 
+NVM_TRIM_DATA[20]: decimal [196], hex: [0xC4], binary: [11000100] 
+
+
 adafruit code
 Valtrim result: 0
 T1 = 27994

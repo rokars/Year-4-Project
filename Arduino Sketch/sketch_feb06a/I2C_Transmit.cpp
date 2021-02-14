@@ -15,24 +15,21 @@ bool I2C_Send_Data(uint8_t add, uint8_t reg, uint8_t dat) {
   Wire.beginTransmission(byte(add));
   Wire.write(byte(reg));
   Wire.write(byte(dat));
-  if (Wire.endTransmission() == 0) {
+  if (Wire.endTransmission() == 0)
     return true;
-  }
-  else {
-    Serial.printf("\n\r *** Command to 0x%x, register 0x%x failed ***\n\r", add, reg);
+  else 
     return false;
-  }
 }
 
-bool I2C_Read_ByteData(uint8_t add, uint8_t reg) {
+bool I2C_Read_Data_Bytes(uint8_t add, uint8_t reg, uint8_t* dat, uint8_t len) {
 
   Wire.beginTransmission(byte(add));
   Wire.write(byte(reg));
   if (Wire.endTransmission(false) == 0) {  // do not send stop messsage
-    Wire.requestFrom(add, (uint8_t)1);
-    if (Wire.available() == 1) {
-      for (int i = 0; i < 1; i++) {
-        dataRead[i] = Wire.read();
+    Wire.requestFrom(add, (uint8_t)len);
+    if (Wire.available() == len) {
+      for (int i = 0; i < len; i++) {
+        *(dat + i) = Wire.read();
       }
       return true;
     }

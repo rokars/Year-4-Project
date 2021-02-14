@@ -15,11 +15,14 @@
 class BMP3XX_Sensor
 {
   public:
-    BMP3XX_Sensor(uint8_t address);
-    bool BMP3XX_Board_Init();
-    bool BMP388_Command_Ready();
-    void BMP3XX_Trim_Data_Verify(uint8_t arr[]);
-    void BMP388_Compensate_Temperature(uint32_t uncomp_temp);
+    BMP3XX_Sensor(uint8_t address);                             // Contstructor
+    bool BMP3XX_Board_Init();                                   // Self-test
+    bool BMP388_Command_Ready();                                // CMD decoder status
+    void BMP3XX_Trim_Data_Parse(uint8_t arr[]);                //
+    float BMP388_Compensate_Temperature(uint32_t uncomp_temp);
+    float BMP388_Compensate_Pressure(uint32_t uncomp_press, float comp_temp);  //
+    bool BMP388_Get_Data();                                     //
+    bool BMP388_Set_Options();
 
 
   private:
@@ -35,7 +38,7 @@ class BMP3XX_Sensor
     const uint8_t BMP388_DATA_2 = 0x06; // PRESS_MSB_23_16
     const uint8_t BMP388_DATA_3 = 0x07; // TEMP_XLSB_7_0
     const uint8_t BMP388_DATA_4 = 0x08; // TEMP_LSB_15_8
-    const uint8_t BMP388_DATA_5 = 0x09; // PRESS_MSB_23_16
+    const uint8_t BMP388_DATA_5 = 0x09; // TEMP_MSB_23_16
 
     const uint8_t BMP388_EVENT = 0x10;
     const uint8_t BMP388_PWR_CTRL = 0x1B;
@@ -49,11 +52,12 @@ class BMP3XX_Sensor
     //  BMP388 CMD register commands
     uint8_t BMP388_softreset = 0xB6;
 
-    // BMP Constants
-    const byte BMP388_CALIB_DATA_LENGHT = 21;
+    //  BMP388 Constants
+    const uint8_t BMP388_CALIB_DATA_LENGHT_BYTES = 21;
     const uint8_t BMP388_CHIP_ID_NO = 0x50;
+    const uint8_t BMP388_DATA_LENGHT_BYTES = 6;
 
-    // Memory map trimming coefficients
+    //  Memory Map Trimming Coefficients
     uint16_t NVM_PAR_T1 = 0;
     uint16_t NVM_PAR_T2 = 0;
     int8_t NVM_PAR_T3 = 0;
@@ -70,7 +74,35 @@ class BMP3XX_Sensor
     int8_t NVM_PAR_P10 = 0;
     int8_t NVM_PAR_P11 = 0;
 
-    uint8_t dataReceived[];
+    //  Calculated Calibration Coefficients
+    double PAR_T1;
+    double PAR_T2;
+    double PAR_T3;
+
+    double PAR_P1;
+    double PAR_P2;
+    double PAR_P3;
+    double PAR_P4;
+    double PAR_P5;
+    double PAR_P6;
+    double PAR_P7;
+    double PAR_P8;
+    double PAR_P9;
+    double PAR_P10;
+    double PAR_P11;
+    float t_lin;
+
+    const uint8_t SEN_OK = 0;
+    const uint8_t COM_ERR = 10;
+    const uint8_t TEMP_ERR = 20;
+    const uint8_t PRESS_ERR = 30;
+
+    const uint8_t TEMP_UPPER_LIM_C = 40;
+    const uint8_t TEMP_LOWER_LIM_C = 0;
+
+    const uint16_t PRESS_UPPER_LIM_HPA = 1100;
+    const uint16_t PRESS_LOWER_LIM_HPA = 900;
+
 };
 
 #endif
