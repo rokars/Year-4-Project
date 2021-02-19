@@ -7,6 +7,17 @@
 uint8_t LISM6DS33_Address_Primary = 0x6A;
 uint8_t LIS3MDL_Address_Primary = 0x1E;
 
+const uint8_t LIS3MDL_WHO_AM_I = 0x0F;
+const uint8_t LIS3MDL_CTRL_REG1 = 0x20;
+const uint8_t LIS3MDL_CTRL_REG2 = 0x21;
+const uint8_t LIS3MDL_CTRL_REG3 = 0x22;
+const uint8_t LIS3MDL_CTRL_REG4 = 0x23;
+const uint8_t LIS3MDL_CTRL_REG5 = 0x23;
+const uint8_t LIS3MDL_STATUS_REG = 0x27;
+const uint8_t LIS3MDL_MAG_DATA_START = 0x28;
+const uint8_t LIS3MDL_MAG_DATA_LENGHT = 6;
+const uint8_t LIS3MDL
+
 bool rslt;
 
 void setup() {
@@ -78,7 +89,7 @@ void loop() {
     MAG_Y = (int16_t)OUTmData[3] << 8 | OUTmData[2];
     MAG_Z = (int16_t)OUTmData[5] << 8 | OUTmData[4];
 
-    Serial.printf("x: %.2f y: %.2f z: %.2f\n\r", (float)MAG_X/6842, (float)MAG_Y/6842, (float)MAG_Z/6842);
+    Serial.printf("%.2f,%.2f,%.2f\n\r", (float)MAG_X/6842, (float)MAG_Y/6842, (float)MAG_Z/6842);
     //Serial.printf("x: %d y: %d z: %d\n\r", MAG_X, MAG_Y, MAG_Z);
     
   }
