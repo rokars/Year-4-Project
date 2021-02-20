@@ -44,26 +44,32 @@ void setup() {
   rslt = I2C_Send_Data(LIS3MDL_Address_Primary, LIS3MDL_CTRL_REG1, 0x70);
   if (!rslt)
     printf("error sending data 1\n\r");
+  delay(50);
 
   // +- 4 gauss full-scale config
   rslt = I2C_Send_Data(LIS3MDL_Address_Primary, LIS3MDL_CTRL_REG2, 0x00);
   if (!rslt)
     printf("error sending data 2\n\r");
-
-  // block-data update
-  rslt = I2C_Send_Data(LIS3MDL_Address_Primary, LIS3MDL_CTRL_REG5, 0x40);
-  if (!rslt)
-    printf("error sending data 4\n\r");
-
-  // continous conversion //power down / idle
-  rslt = I2C_Send_Data(LIS3MDL_Address_Primary, LIS3MDL_CTRL_REG3, 0x00);
-  if (!rslt)
-    printf("error sending data 5\n\r");
+  delay(50);
 
   // z uh-performance
   rslt = I2C_Send_Data(LIS3MDL_Address_Primary, LIS3MDL_CTRL_REG4, 0x0C);
   if (!rslt)
     printf("error sending data 3\n\r");
+  delay(50);
+
+  // block-data update
+  rslt = I2C_Send_Data(LIS3MDL_Address_Primary, LIS3MDL_CTRL_REG5, 0x40);
+  if (!rslt)
+    printf("error sending data 4\n\r");
+  delay(50);
+
+  // continous conversion //power down / idle
+  rslt = I2C_Send_Data(LIS3MDL_Address_Primary, LIS3MDL_CTRL_REG3, 0x00);
+  if (!rslt)
+    printf("error sending data 5\n\r");
+  delay(50);
+
 
 
 
