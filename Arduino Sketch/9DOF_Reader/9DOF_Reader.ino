@@ -17,7 +17,9 @@ const uint8_t LIS3MDL_STATUS_REG = 0x27;
 const uint8_t LIS3MDL_MAG_DATA_START = 0x28;
 const uint8_t LIS3MDL_MAG_DATA_LENGHT = 6;
 
-bool rslt= false;
+int mydelay = 400;
+
+bool rslt = false;
 
 void setup() {
   // put your setup code here, to run once:
@@ -27,38 +29,45 @@ void setup() {
   while (!Serial) {
     ; // wait for serial port to connect. Needed for native USB
   }
-  uint8_t readData, *dPtr = &readData;
+  uint8_t readData = 0, *dPtr = &readData;
 
   rslt = I2C_Read_Data_Bytes(LIS3MDL_Address_Primary, 0x0F, dPtr, 1);
-  if (!rslt && readData != 0x31) {
-    Serial.println("Error reading register / incorrect device ");
+  Serial.printf("device id = %x\n\r", readData);
+  if (!rslt)
+    Serial.println("Error reading register");
+  if (readData != 0x3d) {
+    Serial.println("Incorrect device ");
     while (1);
   }
 
-  // temp en, x/y uh-performance, 2.5hz odr
-  rslt = I2C_Send_Data(LIS3MDL_Address_Primary, LIS3MDL_CTRL_REG1, 0xE8);
+  // x/y uh-performance, 10hz odr
+  rslt = I2C_Send_Data(LIS3MDL_Address_Primary, LIS3MDL_CTRL_REG1, 0x70);
   if (!rslt)
     printf("error sending data 1\n\r");
 
   // +- 4 gauss full-scale config
-  rslt = I2C_Send_Data(LIS3MDL_Address_Primary, LIS3MDL_CTRL_REG2, 0);
+  rslt = I2C_Send_Data(LIS3MDL_Address_Primary, LIS3MDL_CTRL_REG2, 0x00);
   if (!rslt)
     printf("error sending data 2\n\r");
+
+  // block-data update
+  rslt = I2C_Send_Data(LIS3MDL_Address_Primary, LIS3MDL_CTRL_REG5, 0x40);
+  if (!rslt)
+    printf("error sending data 4\n\r");
+
+  // continous conversion //power down / idle
+  rslt = I2C_Send_Data(LIS3MDL_Address_Primary, LIS3MDL_CTRL_REG3, 0x00);
+  if (!rslt)
+    printf("error sending data 5\n\r");
 
   // z uh-performance
   rslt = I2C_Send_Data(LIS3MDL_Address_Primary, LIS3MDL_CTRL_REG4, 0x0C);
   if (!rslt)
     printf("error sending data 3\n\r");
 
-  // block-data update
-  //rslt = I2C_Send_Data(LIS3MDL_Address_Primary, LIS3MDL_CTRL_REG5, 0x40);
-  //if (!rslt)
-  //  printf("error sending data 4\n\r");
 
-  // continous-conversion mode
-  rslt = I2C_Send_Data(LIS3MDL_Address_Primary, LIS3MDL_CTRL_REG3, 0);
-  if (!rslt)
-    printf("error sending data 5\n\r");
+
+
 
 
   /*I2C_Read_Data_Bytes(LISM6DS33_Address_Primary, 0x0F, dPtr, 1);
@@ -85,7 +94,7 @@ void setup() {
 
 void loop() {
 
-  uint8_t OUTmData[6];
+  uint8_t OUTmData[LIS3MDL_MAG_DATA_LENGHT] = { 0 };
   int16_t MAG_X;
   int16_t MAG_Y;
   int16_t MAG_Z;
@@ -95,26 +104,32 @@ void loop() {
   rslt = I2C_Read_Data_Bytes(LIS3MDL_Address_Primary, LIS3MDL_STATUS_REG, statPtr, 1);
   if (!rslt)
     Serial.print("Error reading status\n\r");
-  regStatus >> 3;
-  if (regStatus & 0x1 == 1) {
+  Serial.print("status : ");
+  Serial.println(regStatus, BIN);
+
+  if (regStatus & (0x01 << 3)  == 0x01 << 3) {
 
     rslt = I2C_Read_Data_Bytes(LIS3MDL_Address_Primary, LIS3MDL_MAG_DATA_START, OUTmData, LIS3MDL_MAG_DATA_LENGHT);
     if (!rslt)
       Serial.printf("Error reading data\n\r");
 
-    MAG_X = (int16_t)OUTmData[1] << 8 | OUTmData[0];
-    //Serial.print("x: ");
-    //Serial.print(MAG_X, BIN);
-    MAG_Y = (int16_t)OUTmData[3] << 8 | OUTmData[2];
-    //Serial.print("y: ");
-    //Serial.print(MAG_Y, BIN);
-    MAG_Z = (int16_t)OUTmData[5] << 8 | OUTmData[4];
-    //Serial.print("z: ");
-    //Serial.println(MAG_Z, BIN);
+    for (int i = 0; i < LIS3MDL_MAG_DATA_LENGHT; i++) {
+      Serial.print(OUTmData[i], HEX);
+      Serial.print(" ");
+    }
+    Serial.println();
+
+    MAG_X = (int16_t)(OUTmData[1] << 8 | OUTmData[0]);
+    MAG_Y = (int16_t)(OUTmData[3] << 8 | OUTmData[2]);
+    MAG_Z = (int16_t)(OUTmData[5] << 8 | OUTmData[4]);
 
     Serial.printf("%.2f,%.2f,%.2f\n\r", (float)MAG_X / 6842, (float)MAG_Y / 6842, (float)MAG_Z / 6842);
     //Serial.printf("x: %d y: %d z: %d\n\r", MAG_X, MAG_Y, MAG_Z);
 
+  }
+
+  else if (regStatus & (0x01 << 7) == 0x01 << 7) {
+    Serial.println("***** OVERWRITTEN ***********");
   }
 
   /*uint8_t OUTdata[12];
@@ -172,7 +187,7 @@ void loop() {
 
     }*/
 
-  delay(400);
+  delay(100);
 
 
 
