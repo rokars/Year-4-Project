@@ -16,9 +16,8 @@ const uint8_t LIS3MDL_CTRL_REG5 = 0x23;
 const uint8_t LIS3MDL_STATUS_REG = 0x27;
 const uint8_t LIS3MDL_MAG_DATA_START = 0x28;
 const uint8_t LIS3MDL_MAG_DATA_LENGHT = 6;
-const uint8_t LIS3MDL
 
-bool rslt;
+bool rslt= false;
 
 void setup() {
   // put your setup code here, to run once:
@@ -31,37 +30,55 @@ void setup() {
   uint8_t readData, *dPtr = &readData;
 
   rslt = I2C_Read_Data_Bytes(LIS3MDL_Address_Primary, 0x0F, dPtr, 1);
+  if (!rslt && readData != 0x31) {
+    Serial.println("Error reading register / incorrect device ");
+    while (1);
+  }
+
+  // temp en, x/y uh-performance, 2.5hz odr
+  rslt = I2C_Send_Data(LIS3MDL_Address_Primary, LIS3MDL_CTRL_REG1, 0xE8);
   if (!rslt)
-    Serial.println("Error reading register ");
-  Serial.printf("data WHO AM I REGISTER: %x", readData);
+    printf("error sending data 1\n\r");
 
-  rslt = I2C_Send_Data(LIS3MDL_Address_Primary, 0x21, 0x40);
+  // +- 4 gauss full-scale config
+  rslt = I2C_Send_Data(LIS3MDL_Address_Primary, LIS3MDL_CTRL_REG2, 0);
+  if (!rslt)
+    printf("error sending data 2\n\r");
 
-  rslt = I2C_Send_Data(LIS3MDL_Address_Primary, 0x20, 0xFC);
-  
-  rslt = I2C_Send_Data(LIS3MDL_Address_Primary, 0x23, 0x0C);
+  // z uh-performance
+  rslt = I2C_Send_Data(LIS3MDL_Address_Primary, LIS3MDL_CTRL_REG4, 0x0C);
+  if (!rslt)
+    printf("error sending data 3\n\r");
 
-  rslt = I2C_Send_Data(LIS3MDL_Address_Primary, 0x22, 0x00);
-  
+  // block-data update
+  //rslt = I2C_Send_Data(LIS3MDL_Address_Primary, LIS3MDL_CTRL_REG5, 0x40);
+  //if (!rslt)
+  //  printf("error sending data 4\n\r");
+
+  // continous-conversion mode
+  rslt = I2C_Send_Data(LIS3MDL_Address_Primary, LIS3MDL_CTRL_REG3, 0);
+  if (!rslt)
+    printf("error sending data 5\n\r");
+
 
   /*I2C_Read_Data_Bytes(LISM6DS33_Address_Primary, 0x0F, dPtr, 1);
 
-  Serial.printf("data WHO AM I REGISTER: %x", readData);
+    Serial.printf("data WHO AM I REGISTER: %x", readData);
 
-  rslt = I2C_Send_Data(LISM6DS33_Address_Primary, 0x18, 0x38);  // activate acc xyz axes
-  if (!rslt)
+    rslt = I2C_Send_Data(LISM6DS33_Address_Primary, 0x18, 0x38);  // activate acc xyz axes
+    if (!rslt)
     printf("Failed to activate accelerometer \n\r");
 
-  rslt = I2C_Send_Data(LISM6DS33_Address_Primary, 0x10, 0x40); // accel activate ODR
-  if (!rslt)
+    rslt = I2C_Send_Data(LISM6DS33_Address_Primary, 0x10, 0x40); // accel activate ODR
+    if (!rslt)
     printf("Failed to activate accelerometer \n\r");
 
-  rslt = I2C_Send_Data(LISM6DS33_Address_Primary, 0x19, 0x38);  // activate gyro xyz axes
-  if (!rslt)
+    rslt = I2C_Send_Data(LISM6DS33_Address_Primary, 0x19, 0x38);  // activate gyro xyz axes
+    if (!rslt)
     printf("Failed to activate accelerometer \n\r");
 
-  rslt = I2C_Send_Data(LISM6DS33_Address_Primary, 0x11, 0x40); // gyro activate ODR
-  if (!rslt)
+    rslt = I2C_Send_Data(LISM6DS33_Address_Primary, 0x11, 0x40); // gyro activate ODR
+    if (!rslt)
     printf("Failed to activate gyroscopoe \n\r");*/
 
 }
@@ -74,51 +91,57 @@ void loop() {
   int16_t MAG_Z;
 
   uint8_t regStatus = 0, *statPtr = &regStatus;
-  
-  rslt = I2C_Read_Data_Bytes(LIS3MDL_Address_Primary, 0x27, statPtr, 1);
+
+  rslt = I2C_Read_Data_Bytes(LIS3MDL_Address_Primary, LIS3MDL_STATUS_REG, statPtr, 1);
   if (!rslt)
     Serial.print("Error reading status\n\r");
   regStatus >> 3;
   if (regStatus & 0x1 == 1) {
 
-    rslt = I2C_Read_Data_Bytes(LIS3MDL_Address_Primary, 0x28, OUTmData, 6);
+    rslt = I2C_Read_Data_Bytes(LIS3MDL_Address_Primary, LIS3MDL_MAG_DATA_START, OUTmData, LIS3MDL_MAG_DATA_LENGHT);
     if (!rslt)
       Serial.printf("Error reading data\n\r");
 
     MAG_X = (int16_t)OUTmData[1] << 8 | OUTmData[0];
+    //Serial.print("x: ");
+    //Serial.print(MAG_X, BIN);
     MAG_Y = (int16_t)OUTmData[3] << 8 | OUTmData[2];
+    //Serial.print("y: ");
+    //Serial.print(MAG_Y, BIN);
     MAG_Z = (int16_t)OUTmData[5] << 8 | OUTmData[4];
+    //Serial.print("z: ");
+    //Serial.println(MAG_Z, BIN);
 
-    Serial.printf("%.2f,%.2f,%.2f\n\r", (float)MAG_X/6842, (float)MAG_Y/6842, (float)MAG_Z/6842);
+    Serial.printf("%.2f,%.2f,%.2f\n\r", (float)MAG_X / 6842, (float)MAG_Y / 6842, (float)MAG_Z / 6842);
     //Serial.printf("x: %d y: %d z: %d\n\r", MAG_X, MAG_Y, MAG_Z);
-    
+
   }
 
   /*uint8_t OUTdata[12];
-  uint8_t regStatus = 0, *statPtr = &regStatus;
-  
-  int16_t GYRO_X;
-  int16_t GYRO_Y;
-  int16_t GYRO_Z;
+    uint8_t regStatus = 0, *statPtr = &regStatus;
 
-  int16_t ACCEL_X;
-  int16_t ACCEL_Y;
-  int16_t ACCEL_Z;
+    int16_t GYRO_X;
+    int16_t GYRO_Y;
+    int16_t GYRO_Z;
 
-  float aOUT_X;
-  float aOUT_Y;
-  float aOUT_Z;
+    int16_t ACCEL_X;
+    int16_t ACCEL_Y;
+    int16_t ACCEL_Z;
 
-  float gOUT_X;
-  float gOUT_Y;
-  float gOUT_Z;
+    float aOUT_X;
+    float aOUT_Y;
+    float aOUT_Z;
 
-  rslt = I2C_Read_Data_Bytes(LISM6DS33_Address_Primary, 0x1E, statPtr, 1);
-  if (!rslt)
+    float gOUT_X;
+    float gOUT_Y;
+    float gOUT_Z;
+
+    rslt = I2C_Read_Data_Bytes(LISM6DS33_Address_Primary, 0x1E, statPtr, 1);
+    if (!rslt)
     printf("Failed to get status of data \n\r");
-  //printf(" STATUS_REG is %x\n\r", regStatus);
-  if (regStatus > 0)
-  {
+    //printf(" STATUS_REG is %x\n\r", regStatus);
+    if (regStatus > 0)
+    {
 
     rslt = I2C_Read_Data_Bytes(LISM6DS33_Address_Primary, 0x22, OUTdata, 12);
     if (!rslt)
@@ -126,13 +149,13 @@ void loop() {
 
     GYRO_X = (int16_t)OUTdata[1] << 8 | OUTdata[0];
     gOUT_X = (float)GYRO_X * 8.75 * 0.017453293 / 1000;
- 
+
     GYRO_Y = (int16_t)OUTdata[3] << 8 | OUTdata[2];
     gOUT_Y = (float)GYRO_Y * 8.75 * 0.017453293 / 1000;
 
     GYRO_Z = (int16_t)OUTdata[5] << 8 | OUTdata[4];
     gOUT_Z = (float)GYRO_Z * 8.75 * 0.017453293 / 1000;
-    
+
 
     ACCEL_X = (int16_t)OUTdata[7] << 8 | OUTdata[6];
     aOUT_X = (float)ACCEL_X * 0.061 / 1000;
@@ -147,9 +170,9 @@ void loop() {
     Serial.printf("X:%.2f Y: %.2f Z: %.2f\n\r",aOUT_X,aOUT_Y,aOUT_Z);
     Serial.printf("X:%.2f Y: %.2f Z: %.2f\n\r", gOUT_X, gOUT_Y, gOUT_Z);
 
-  }*/
+    }*/
 
-  delay(150);
+  delay(400);
 
 
 
