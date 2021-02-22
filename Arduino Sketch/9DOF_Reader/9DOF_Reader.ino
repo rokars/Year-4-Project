@@ -12,9 +12,10 @@ const uint8_t LIS3MDL_CTRL_REG1 = 0x20;
 const uint8_t LIS3MDL_CTRL_REG2 = 0x21;
 const uint8_t LIS3MDL_CTRL_REG3 = 0x22;
 const uint8_t LIS3MDL_CTRL_REG4 = 0x23;
-const uint8_t LIS3MDL_CTRL_REG5 = 0x23;
+const uint8_t LIS3MDL_CTRL_REG5 = 0x24;
 const uint8_t LIS3MDL_STATUS_REG = 0x27;
 const uint8_t LIS3MDL_MAG_DATA_START = 0x28;
+
 const uint8_t LIS3MDL_MAG_DATA_LENGHT = 6;
 
 int mydelay = 400;
@@ -40,16 +41,26 @@ void setup() {
     while (1);
   }
 
-  // x/y uh-performance, 10hz odr
-  rslt = I2C_Send_Data(LIS3MDL_Address_Primary, LIS3MDL_CTRL_REG1, 0x70);
-  if (!rslt)
-    printf("error sending data 1\n\r");
-  delay(50);
+
+  /*
+     A typical wakeup sequence is summarized as follows:
+     1. Write 40h in CTRL_REG2.   Sets full scale ±12 Hz.
+     2. Write FCh in CTRL_REG1.  Sets UHP mode on the X/Y axes, ODR at 80 Hz and activates temperature sensor.
+     3. Write 0Ch in CTRL_REG4.   Sets UHP mode on the Z-axis.
+     4. Write 00h in CTRL_REG3.   Sets continuous-measurement mode.
+  */
+
 
   // +- 4 gauss full-scale config
   rslt = I2C_Send_Data(LIS3MDL_Address_Primary, LIS3MDL_CTRL_REG2, 0x00);
   if (!rslt)
     printf("error sending data 2\n\r");
+  delay(50);
+
+  // x/y uh-performance, 10hz odr
+  rslt = I2C_Send_Data(LIS3MDL_Address_Primary, LIS3MDL_CTRL_REG1, 0x70);
+  if (!rslt)
+    printf("error sending data 1\n\r");
   delay(50);
 
   // z uh-performance
@@ -68,12 +79,12 @@ void setup() {
   rslt = I2C_Send_Data(LIS3MDL_Address_Primary, LIS3MDL_CTRL_REG3, 0x00);
   if (!rslt)
     printf("error sending data 5\n\r");
-  delay(50);
+  delay(500);
 
-
-
-
-
+  uint8_t regTest[5];
+  rslt = I2C_Read_Data_Bytes(LIS3MDL_Address_Primary, LIS3MDL_CTRL_REG1, regTest, 5);
+  if (!rslt)
+    printf("error reading data 6\n\r");
 
 
   /*I2C_Read_Data_Bytes(LISM6DS33_Address_Primary, 0x0F, dPtr, 1);
@@ -110,8 +121,8 @@ void loop() {
   rslt = I2C_Read_Data_Bytes(LIS3MDL_Address_Primary, LIS3MDL_STATUS_REG, statPtr, 1);
   if (!rslt)
     Serial.print("Error reading status\n\r");
-  Serial.print("status : ");
-  Serial.println(regStatus, BIN);
+  //Serial.print("status : ");
+  //Serial.println(regStatus, BIN);
 
   if (regStatus & (0x01 << 3)  == 0x01 << 3) {
 
@@ -119,15 +130,16 @@ void loop() {
     if (!rslt)
       Serial.printf("Error reading data\n\r");
 
-    for (int i = 0; i < LIS3MDL_MAG_DATA_LENGHT; i++) {
+    /*for (int i = 0; i < LIS3MDL_MAG_DATA_LENGHT; i++) {
       Serial.print(OUTmData[i], HEX);
       Serial.print(" ");
-    }
-    Serial.println();
+      }
+      Serial.println();*/
 
-    MAG_X = (int16_t)(OUTmData[1] << 8 | OUTmData[0]);
-    MAG_Y = (int16_t)(OUTmData[3] << 8 | OUTmData[2]);
-    MAG_Z = (int16_t)(OUTmData[5] << 8 | OUTmData[4]);
+    // order of operations
+    MAG_X = (int16_t)OUTmData[1] << 8 | OUTmData[0];
+    MAG_Y = (int16_t)OUTmData[3] << 8 | OUTmData[2];
+    MAG_Z = (int16_t)OUTmData[5] << 8 | OUTmData[4];
 
     Serial.printf("%.2f,%.2f,%.2f\n\r", (float)MAG_X / 6842, (float)MAG_Y / 6842, (float)MAG_Z / 6842);
     //Serial.printf("x: %d y: %d z: %d\n\r", MAG_X, MAG_Y, MAG_Z);

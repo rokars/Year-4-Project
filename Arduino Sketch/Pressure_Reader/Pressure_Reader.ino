@@ -37,6 +37,7 @@ void setup() {
   I2C_Read_Data_Bytes(0x77, 0x02, datPtr, 1);
   Serial.print(" ERR REGISTER CHECK: ");
   Serial.println(dat, BIN);
+  Serial.println("temperature(c),pressure(pa)");
 }
 
 void loop() {
@@ -44,20 +45,17 @@ void loop() {
   float sensor_Data_Out[2], sumTemp = 0, sumPress = 0, tempRead, pressRead, altitude;
   bool rslt = false;
 
-  for (int i = 0; i < 10; i++) {
+  for (int i = 0; i < 1; i++) {
     rslt = bmp.BMP388_Get_Data(sensor_Data_Out);
     if (!rslt) {
       Serial.println(" Read Error ");
     }
-    sumTemp += sensor_Data_Out[0];
-    sumPress += sensor_Data_Out[1];
+    //sumTemp += sensor_Data_Out[0];
+    //sumPress += sensor_Data_Out[1];
     delay(80);
   }
-  tempRead = sumTemp / 10;
-  pressRead = sumPress / 10;
-  Serial.printf(" temperature (C): %0.2f, pressure (PA): %0.2f ", tempRead, pressRead);
-
-  altitude = 145366.45 * (1 - pow(((pressRead / 100) / 1005.422), 0.190284));
-  Serial.printf("Approx. altitude %0.2f\n\r", altitude / 3.281);
+  //tempRead = sumTemp / 1;
+  //pressRead = sumPress / 1;
+  Serial.printf("%0.2f,%0.2f\n\r", sensor_Data_Out[0], sensor_Data_Out[1]);
 
 }
