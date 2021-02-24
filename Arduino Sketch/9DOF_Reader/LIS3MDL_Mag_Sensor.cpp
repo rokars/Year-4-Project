@@ -8,107 +8,123 @@
 #include "Arduino.h"
 #include "LIS3MDL_Mag_Sensor.h"
 #include "I2C_Transmit.h"
+#include "Function_Return_Codes.h"
 #include <Wire.h>
 #include <cstdint>
 
 /*
    Constructor
+   bool SD0 referring to i2c address jumper on board
+   true = high, false = low
 */
-LIS3MDL_Mag::LIS3MDL_Mag(uint8_t address) {
-  I2C_Address = address;
+LIS3MDL_Mag::LIS3MDL_Mag(bool SD0) {
+  if (SD0 == true)
+    I2C_Address = LIS3MDL_ADDRESS_PRIMARY;
+  else
+    I2C_Address = LIS3MDL_ADDRESS_SECONDARY;
 }
 
-bool LIS3MDL_Mag::LIS3MDL_Init() {
-  uint8_t readData = 0, *dPtr = &readData;
+/*
+   Initialise sensor
+   Soft-reset and read device id to check if
+   we are communicating with the correct chip
+*/
+uint8_t LIS3MDL_Mag::LIS3MDL_Init() {
+
+  uint8_t sensInfo = 0;
+  uint8_t* sensInfoPtr = &sensInfo;
   bool rslt = false;
 
-  rslt = I2C_Read_Data_Bytes(I2C_Address, 0x0F, dPtr, 1);
-  Serial.printf("device id = %x\n\r", readData);
+  rslt = I2C_Read_Data_Bytes(I2C_Address, LIS3MDL_WHO_AM_I, sensInfoPtr, ONE_BYTE);
   if (!rslt)
-    Serial.println("Error reading register");
-  if (readData != 0x3d) {
-    Serial.println("Incorrect device ");
-    while (1);
-  }
+    return COMM_ERR;
+  if (sensInfo != LIS3MDL_CHIP_ID)
+    return DEV_ID_ERR;
+
+  rslt = I2C_Send_Data(I2C_Address, LIS3MDL_CTRL_REG2, LIS3MDL_SOFTRESET);
+  if (!rslt)
+    return COMM_ERR;
+
+  return SENSOR_OK;
+}
 
 
-  /*
-     A typical wakeup sequence is summarized as follows:
-     1. Write 40h in CTRL_REG2.   Sets full scale ±12 Hz.
-     2. Write FCh in CTRL_REG1.  Sets UHP mode on the X/Y axes, ODR at 80 Hz and activates temperature sensor.
-     3. Write 0Ch in CTRL_REG4.   Sets UHP mode on the Z-axis.
-     4. Write 00h in CTRL_REG3.   Sets continuous-measurement mode.
-  */
+/*
+   configure settings for reading data
+*/
+uint8_t LIS3MDL_Mag::LIS3MDL_Config() {
 
+  bool rslt = false;
 
   // +- 4 gauss full-scale config
   rslt = I2C_Send_Data(I2C_Address, LIS3MDL_CTRL_REG2, 0x00);
   if (!rslt)
-    printf("error sending data 2\n\r");
-  delay(50);
+    return COMM_ERR;
+  delay(10);
 
   // x/y uh-performance, 10hz odr
   rslt = I2C_Send_Data(I2C_Address, LIS3MDL_CTRL_REG1, 0x70);
   if (!rslt)
-    printf("error sending data 1\n\r");
-  delay(50);
+    return COMM_ERR;
+  delay(10);
 
   // z uh-performance
   rslt = I2C_Send_Data(I2C_Address, LIS3MDL_CTRL_REG4, 0x0C);
   if (!rslt)
-    printf("error sending data 3\n\r");
-  delay(50);
+    return COMM_ERR;
+  delay(10);
 
   // block-data update
   rslt = I2C_Send_Data(I2C_Address, LIS3MDL_CTRL_REG5, 0x40);
   if (!rslt)
-    printf("error sending data 4\n\r");
-  delay(50);
+    return COMM_ERR;
+  delay(10);
 
   // continous conversion //power down / idle
   rslt = I2C_Send_Data(I2C_Address, LIS3MDL_CTRL_REG3, 0x00);
   if (!rslt)
-    printf("error sending data 5\n\r");
+    return COMM_ERR;
+
+  return SENSOR_OK;
 }
 
-bool LIS3MDL_Mag::LIS3MDL_Get_Data(float* sensData) {
-  uint8_t OUTmData[LIS3MDL_MAG_DATA_LENGHT] = { 0 };
-  int16_t MAG_X;
-  int16_t MAG_Y;
-  int16_t MAG_Z;
 
-  uint8_t regStatus = 0, *statPtr = &regStatus;
+/*
+   Read sensor data registers
+*/
+uint8_t LIS3MDL_Mag::LIS3MDL_Get_Data(float* sensData) {
+  
+  uint8_t mOutData[LIS3MDL_MAG_DATA_LENGHT] = { 0 };
+  int16_t mag_X;
+  int16_t mag_Y;
+  int16_t mag_Z;
+
+  uint8_t statusReg = 0;
+  uint8_t* statPtr = &statusReg;
   bool rslt = false;
 
-  rslt = I2C_Read_Data_Bytes(I2C_Address, LIS3MDL_STATUS_REG, statPtr, 1);
+  rslt = I2C_Read_Data_Bytes(I2C_Address, LIS3MDL_STATUS_REG, statPtr, ONE_BYTE);
   if (!rslt)
-    Serial.print("Error reading status\n\r");
-  //Serial.print("status : ");
-  //Serial.println(regStatus, BIN);
+    return COMM_ERR;
 
-  if (regStatus & (0x01 << 3)  == 0x01 << 3) {
+  if (statusReg & (0x01 << 3)  == 0x01 << 3) {
 
-    rslt = I2C_Read_Data_Bytes(I2C_Address, LIS3MDL_MAG_DATA_START, OUTmData, LIS3MDL_MAG_DATA_LENGHT);
+    rslt = I2C_Read_Data_Bytes(I2C_Address, LIS3MDL_MAG_DATA_START, mOutData, LIS3MDL_MAG_DATA_LENGHT);
     if (!rslt)
-      Serial.printf("Error reading data\n\r");
-
-    /*for (int i = 0; i < LIS3MDL_MAG_DATA_LENGHT; i++) {
-      Serial.print(OUTmData[i], HEX);
-      Serial.print(" ");
-      }
-      Serial.println();*/
+      return READING_ERR;
 
     // order of operations
-    MAG_X = (int16_t)OUTmData[1] << 8 | OUTmData[0];
-    MAG_Y = (int16_t)OUTmData[3] << 8 | OUTmData[2];
-    MAG_Z = (int16_t)OUTmData[5] << 8 | OUTmData[4];
+    mag_X = (int16_t)mOutData[1] << 8 | mOutData[0];
+    mag_Y = (int16_t)mOutData[3] << 8 | mOutData[2];
+    mag_Z = (int16_t)mOutData[5] << 8 | mOutData[4];
 
-    *sensData = (float)MAG_X / 6842;
-    *(sensData + 1) = (float)MAG_Y / 6842;
-    *(sensData + 2) = (float)MAG_Z / 6842;
+    *(sensData + 0) = (float)mag_X / GAUSS_SENS_4;
+    *(sensData + 1) = (float)mag_Y / GAUSS_SENS_4;
+    *(sensData + 2) = (float)mag_Z / GAUSS_SENS_4;
   }
 
-  else if (regStatus & (0x01 << 7) == 0x01 << 7) {
+  else if (statusReg & (0x01 << 7) == 0x01 << 7) {
     Serial.println("***** OVERWRITTEN ***********");
   }
+  return SENSOR_OK;
 }

@@ -16,4 +16,6 @@ bool I2C_Send_Data(uint8_t add, uint8_t reg, uint8_t dat);
 
 bool I2C_Read_Data_Bytes(uint8_t add, uint8_t reg, uint8_t* dat, uint8_t len);
 
+const uint8_t ONE_BYTE = 1;
+
 #endif

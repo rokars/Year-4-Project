@@ -4,14 +4,14 @@
 #include "I2C_Transmit.h"
 #include "LIS3MDL_Mag_Sensor.h"
 #include "LISM6DS33_AccelGyro_Sensor.h"
+#include "Function_Return_Codes.h"
 
 // I2C address when SD0 = VDDIO
 const uint8_t LISM6DS33_Address_Primary = 0x6A;
-const uint8_t LIS3MDL_Address_Primary = 0x1E;
 
-LIS3MDL_Mag mag(LIS3MDL_Address_Primary);
+LIS3MDL_Mag mag(true);
 LISM6DS33_AccelGyro accgyr(LISM6DS33_Address_Primary);
-bool rslt = false;
+uint8_t returnCode = 0;
 
 
 void setup() {
@@ -24,12 +24,22 @@ void setup() {
   }
 
 
-  rslt = mag.LIS3MDL_Init();
-  rslt = accgyr.LISM6DS33_Init();
+  returnCode = mag.LIS3MDL_Init();
+  if (returnCode != 0)
+    Serial.printf("Init LIS3MDL error %d\n\r", returnCode);
 
-  if (!rslt) {
-    Serial.println("error setting up sensors");
-  }
+  returnCode = mag.LIS3MDL_Config();
+  if (returnCode != 0)
+    Serial.printf("Config LIS3MDL error %d\n\r", returnCode);
+
+  returnCode = accgyr.LISM6DS33_Init();
+  if (returnCode != 0)
+    Serial.printf("Init LISM6DS33 error %d\n\r", returnCode);
+
+  returnCode = accgyr.LISM6DS33_Config();
+  if (returnCode != 0)
+    Serial.printf("Config LISM6DS33 error %d\n\r", returnCode);
+
 
 }
 
@@ -37,25 +47,21 @@ void loop() {
 
   float sensorData[9];
 
-  rslt = mag.LIS3MDL_Get_Data(sensorData);
-  if (!rslt) {
-    Serial.printf("error getting data\n\r");
-  }
+  returnCode = mag.LIS3MDL_Get_Data(sensorData);
+  if (returnCode != 0)
+    Serial.printf("Get Data LIS3MDL error %d\n\r", returnCode);
 
-  //Serial.printf("Xm: %.2f, Ym: %.2f, Zm: %.2f\n\r", sensorData[0], sensorData[1], sensorData[2]);
 
-  rslt = accgyr.LISM6DS33_Get_Data(sensorData + 3);
-  if (!rslt) {
-    Serial.printf("error getting data\n\r");
-  }
+  returnCode = accgyr.LISM6DS33_Get_Data(sensorData + 3);
+  if (returnCode != 0)
+    Serial.printf("Get Data LISM6DS33 error %d\n\r", returnCode);
 
-  //Serial.printf("Xg: %.2f, Yg: %.2f, Zg: %.2f\n\r", sensorData[3], sensorData[4], sensorData[5]);
-  //Serial.printf("Xa: %.2f, Ya: %.2f, Za: %.2f\n\r", sensorData[6], sensorData[7], sensorData[8]);
 
-  
   Serial.printf("%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f\n\r", sensorData[0], sensorData[1], sensorData[2], sensorData[3], sensorData[4], sensorData[5], sensorData[6], sensorData[7], sensorData[8]);
+
+  //Serial.printf("M:%.2f,%.2f,%.2f\n\r", sensorData[0], sensorData[1], sensorData[2]);//mag
   //Serial.printf("G,%.2f,%.2f,%.2f\n\r", sensorData[3], sensorData[4], sensorData[5]);//gyro
-  //Serial.printf("A,-%.2f,%.2f,%.2f\n\r", sensorData[6], sensorData[7], sensorData[8]);//accel
+  //Serial.printf("A,%.2f,%.2f,%.2f\n\r", sensorData[6], sensorData[7], sensorData[8]);//accel
 
   delay(100);
 
