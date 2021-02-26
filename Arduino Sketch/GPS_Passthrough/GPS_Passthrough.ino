@@ -10,14 +10,14 @@ void setup()
 
 void loop()
 {
-    if (SoftSerial.available())                     // if date is coming from software serial port ==> data is coming from SoftSerial shield
+    if (SoftSerial.available())                     // if data is coming from software serial port ==> data is coming from SoftSerial shield
     {
         while(SoftSerial.available())               // reading data into char array
         {
             buffer[count++]=SoftSerial.read();      // writing data into array
             if(count == 64)break;
         }
-        Serial.write(buffer,count);                 // if no data transmission ends, write buffer to hardware serial port
+        Serial.write(buffer,count);                 // if no data, transmission ends, write buffer to hardware serial port
         clearBufferArray();                         // call clearBufferArray function to clear the stored data from the array
         count = 0;                                  // set counter of while loop to zero 
     }
