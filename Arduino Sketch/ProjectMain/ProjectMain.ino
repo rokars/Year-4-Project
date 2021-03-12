@@ -8,23 +8,24 @@
 #include "LIS3MDL_Mag_Sensor.h"
 #include "LSM6DS33_AccelGyro_Sensor.h"
 #include "Function_Return_Codes.h"
+#include "SIM28_GPS_Receiver.h"
 
 LIS3MDL_Mag mag(true);
 LSM6DS33_AccelGyro accgyr(false);
 BMP3XX_Sensor bmp(true);
 
-SoftwareSerial SoftSerial(0, 2);
-const int a = 64;
-unsigned char buffer[a];                   // buffer array for data receive over serial port
-int count = 0;
-
 uint8_t returnCode = 0;
+
+//const uint8_t a = 128;
+unsigned char buffer[a];                   // buffer array for data receive over serial port
+uint8_t count = 0;
+
+SoftwareSerial SoftSerial(0, 2);
 
 void setup() {
   // put your setup code here, to run once:
   Wire.begin();
-
-  SoftSerial.begin(9600);                 // the SoftSerial baud rate
+  
   Serial.begin(115200);
   while (!Serial) {
     ; // wait for serial port to connect. Needed for native USB
@@ -54,6 +55,10 @@ void setup() {
     Serial.printf("comms error to bmp return %d\n\r", returnCode);
   delay(50);
 
+  bool gg = GPS_init(SoftSerial);
+  if (!gg)
+    Serial.println("*************** GPS INIT FAIL****************");
+
   Serial.println("MagX,MagY,MagZ,GyroX,GyroY,GyroZ,AccelX,AccelY,AccelZ,TempC,PressPa");
 }
 
@@ -76,37 +81,31 @@ void loop() {
   if (!rslt) {
     Serial.println(" Read Error ");
   }
-  //Serial.printf("\n\r\n\r%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%0.2f,%0.2f\n\r\n\r", sensorData[0], sensorData[1], sensorData[2], sensorData[3], sensorData[4], sensorData[5], sensorData[6], sensorData[7], sensorData[8], sensorData[9], sensorData[10]);
+  Serial.printf("\n\r\n\r%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%0.2f,%0.2f\n\r\n\r", sensorData[0], sensorData[1], sensorData[2], sensorData[3], sensorData[4], sensorData[5], sensorData[6], sensorData[7], sensorData[8], sensorData[9], sensorData[10]);
+
+  bool gg = receiveGpsData(SoftSerial, buffer, a);
+  if (!gg)
+    Serial.println("*************** GPS READ FAIL****************");
   
-  receiveGpsData(buffer, a);
-  Serial.write(buffer, count);
-  Serial.printf("count = %d\n\r\n\r", count);
+  //Serial.write(buffer, gg);
+  //Serial.printf("gg = %d\n\r\n\r", gg);
 
-  delay(100);
+  delay(500);
 }
 
-void receiveGpsData(unsigned char* dataRec, uint8_t dataRecSize) {
-  memset(dataRec, '\0', dataRecSize);
-  count = 0;
-
-  if (SoftSerial.available()) {                    // if date is coming from software serial port ==> data is coming from SoftSerial shield
-    while (SoftSerial.available()) {             // reading data into char array
-
-      *(dataRec + count++) = SoftSerial.read();    // writing data into array
-      if (count == a)
-        break;
-    }
+/*
+   void loop() {
+  if (Serial.available()) {
+   char c = Serial.read();
+   Serial.write(c);
+   mySerial.write(c);
   }
-  if (Serial.available())                 // if data is available on hardware serial port ==> data is coming from PC or notebook
-    SoftSerial.write(Serial.read());        // write it to the SoftSerial shield
-}
-
-/*void clearBufferArray() {     // function to clear buffer array
-  for (int i = 0; i < count; i++)
-  {
-    buffer[i] = NULL;     // clear all index of array with command NULL
+  if (mySerial.available()) {
+    char c = mySerial.read();
+    Serial.write(c);
   }
-  }*/
+  }
+*/
 
 //Serial.printf("M:%.2f,%.2f,%.2f\n\r", sensorData[0], sensorData[1], sensorData[2]);//mag
 //Serial.printf("G,%.2f,%.2f,%.2f\n\r", sensorData[3], sensorData[4], sensorData[5]);//gyro
