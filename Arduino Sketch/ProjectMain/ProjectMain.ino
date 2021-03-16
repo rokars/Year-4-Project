@@ -2,6 +2,7 @@
 #include <Wire.h>
 #include <cstdint>
 #include <SoftwareSerial.h>
+#include <WiFi.h>
 
 #include "I2C_Transmit.h"
 #include "BMP3XX_Sensor.h"
@@ -9,6 +10,7 @@
 #include "LSM6DS33_AccelGyro_Sensor.h"
 #include "Function_Return_Codes.h"
 #include "SIM28_GPS_Receiver.h"
+#include "myWifiClient.h"
 
 LIS3MDL_Mag mag(true);
 LSM6DS33_AccelGyro accgyr(false);
@@ -16,7 +18,7 @@ BMP3XX_Sensor bmp(true);
 
 uint8_t returnCode = 0;
 
-//const uint8_t a = 128;
+const uint8_t a = 128;
 unsigned char buffer[a];                   // buffer array for data receive over serial port
 uint8_t count = 0;
 
@@ -25,11 +27,16 @@ SoftwareSerial SoftSerial(0, 2);
 void setup() {
   // put your setup code here, to run once:
   Wire.begin();
-  
+
   Serial.begin(115200);
   while (!Serial) {
     ; // wait for serial port to connect. Needed for native USB
   }
+
+  bool ga = wifiClient_Init();
+  if (!ga)
+    Serial.println("*************** WIFI INIT FAIL *************");
+  delay(100);
 
   returnCode = mag.LIS3MDL_Init();
   if (returnCode == 0) {
@@ -59,6 +66,8 @@ void setup() {
   if (!gg)
     Serial.println("*************** GPS INIT FAIL****************");
 
+  delay(100);
+
   Serial.println("MagX,MagY,MagZ,GyroX,GyroY,GyroZ,AccelX,AccelY,AccelZ,TempC,PressPa");
 }
 
@@ -83,14 +92,21 @@ void loop() {
   }
   Serial.printf("\n\r\n\r%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%0.2f,%0.2f\n\r\n\r", sensorData[0], sensorData[1], sensorData[2], sensorData[3], sensorData[4], sensorData[5], sensorData[6], sensorData[7], sensorData[8], sensorData[9], sensorData[10]);
 
-  bool gg = receiveGpsData(SoftSerial, buffer, a);
-  if (!gg)
+  uint8_t gg = receiveGpsData(SoftSerial, buffer, a);
+  if (gg <= 0)
     Serial.println("*************** GPS READ FAIL****************");
-  
-  //Serial.write(buffer, gg);
-  //Serial.printf("gg = %d\n\r\n\r", gg);
 
-  delay(500);
+  Serial.write(buffer, gg);
+  Serial.println("finish");
+  gg = 0;
+
+  bool gh = wifiClient_SendDat();
+  if (!gh)
+    Serial.println("Wifi Err");
+
+  //delay(1000);
+
+
 }
 
 /*

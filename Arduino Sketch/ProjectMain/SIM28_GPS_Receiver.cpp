@@ -29,7 +29,7 @@ bool GPS_init(SoftwareSerial &gpsSerial) {
 
   gpsSerial.println(PMTK_SET_NMEA_OUTPUT_RMCONLY);
   delay(100);
-  gpsSerial.println(PMTK_SET_NMEA_UPDATE_2HZ);
+  gpsSerial.println(PMTK_SET_NMEA_UPDATE_1HZ);
 
   return true;
 
@@ -37,7 +37,7 @@ bool GPS_init(SoftwareSerial &gpsSerial) {
   //mySerial.println(PMTK_Q_RELEASE);
 }
 
-bool receiveGpsData(SoftwareSerial &gpsSerial, unsigned char* dataRec, uint8_t dataRecSize) {
+uint8_t receiveGpsData(SoftwareSerial &gpsSerial, unsigned char* dataRec, uint8_t dataRecSize) {
   memset(dataRec, '\0', dataRecSize);
   uint8_t recCount = 0;
 
@@ -45,15 +45,11 @@ bool receiveGpsData(SoftwareSerial &gpsSerial, unsigned char* dataRec, uint8_t d
     while (gpsSerial.available()) {             // reading data into char array
 
       *(dataRec + recCount++) = gpsSerial.read();    // writing data into array
-      if (recCount == a)
+      if (recCount == dataRecSize)
         break;
     }
-    Serial.write(dataRec, recCount);                // if no data, transmission ends, write buffer to hardware serial port
+    return recCount;// if no data, transmission ends
   }
-  //if (Serial.available())                 // if data is available on hardware serial port ==> data is coming from PC or notebook
-  //  SoftSerial.write(Serial.read());        // write it to the SoftSerial shield
-
-  return true;
 }
 
 /*void clearBufferArray() {     // function to clear buffer array

@@ -74,8 +74,6 @@
 
 bool GPS_init(SoftwareSerial &gpsSerial);
 
-bool receiveGpsData(SoftwareSerial &gpsSerial, unsigned char* dataRec, uint8_t dataRecSize);
-
-const uint8_t a = 128;
+uint8_t receiveGpsData(SoftwareSerial &gpsSerial, unsigned char* dataRec, uint8_t dataRecSize);
 
 #endif
