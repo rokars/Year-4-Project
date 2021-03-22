@@ -97,10 +97,9 @@ void loop() {
     Serial.println("*************** GPS READ FAIL****************");
 
   Serial.write(buffer, gg);
-  Serial.println("finish");
-  gg = 0;
+  //gg = 0;
 
-  bool gh = wifiClient_SendDat();
+  bool gh = wifiClient_GetReq();
   if (!gh)
     Serial.println("Wifi Err");
 

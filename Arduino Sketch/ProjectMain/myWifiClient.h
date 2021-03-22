@@ -18,6 +18,7 @@ const char homePcHost[] = "192.168.0.64";
 const int httpPort = 8000;
 
 bool wifiClient_Init();
-bool wifiClient_SendDat();
+bool wifiClient_GetReq();
+bool wifiClient_PostReq();
 
 #endif
