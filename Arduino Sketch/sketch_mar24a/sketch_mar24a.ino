@@ -13,36 +13,36 @@ void setup() {
   delay(4000);
 
   WiFi.begin(ssid, password);
-  while (WiFi.status() != WL_CONNECTED) {
+  while (WiFi.status() != WL_CONNECTED) { //Check for the connection
     delay(500);
     Serial.println("Connecting..");
   }
 
-  Serial.print("Connected to WiFi network with IP Address: ");
+  Serial.print("Connected to the WiFi network with IP: ");
   Serial.println(WiFi.localIP());
 }
 
 void loop() {
-  
-  if (WiFi.status() == WL_CONNECTED) {  //Check WiFi connection status
+
+  if (WiFi.status() == WL_CONNECTED) { //Check WiFi connection status
 
     HTTPClient http;
 
-    http.begin(serverName);
 
-    //http.addHeader("Content-Type", "application/json");
-    http.addHeader("Content-Type", "text/plain");
-    int httpResponseCode = http.POST(json);
+    http.begin(serverName);  //Specify destination for HTTP request
+    http.addHeader("Content-Type", "text/plain");             //Specify content-type header
+
+    int httpResponseCode = http.POST(json);   //Send the actual POST request
 
     Serial.print("HTTP Response code: ");
     Serial.println(httpResponseCode);
 
-    // Free resources
-    http.end();
+
+    http.end();  //Free resources
   }
   else {
-    Serial.println("WiFi Disconnected");
+    Serial.println("Error in WiFi connection");
   }
 
-  delay(5000);
+  delay(5000);  //Send a request every 5 seconds
 }
