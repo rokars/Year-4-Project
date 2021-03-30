@@ -3,9 +3,10 @@
 
 const char* ssid = "VM0061221";
 const char* password = "pcH7fjyv7dxc";
-const char* serverName = "http://192.168.0.64:8090/sendHeight";
+const char* serverName = "http://192.168.0.64:8000/sendHeight";
 
-String json = "{\"mock_data\": [{\"TimeStampDate\": \"2020-12-26T13:55:12Z\",\"AltitudeQnh_meters\": 85,\"AirSpeed_knots\": -24.3,\"VerticalSpeed_ms\": 4.08,\"NormalAcceleration_g\": 0.85,\"MotorPower_volts\": 3.4}]}";
+const String json = "{\"mock_data\": [{\"TimeStampDate\": \"2020-12-26T13:55:12Z\",\"AltitudeQnh_meters\": 85,\"AirSpeed_knots\": -24.3,\"VerticalSpeed_ms\": 4.08,\"NormalAcceleration_g\": 0.85,\"MotorPower_volts\": 3.4}]}";
+uint8_t jsonLen = json.length();
 
 void setup() {
 
@@ -30,7 +31,8 @@ void loop() {
 
 
     http.begin(serverName);  //Specify destination for HTTP request
-    http.addHeader("Content-Type", "text/plain");             //Specify content-type header
+    http.addHeader("Content-Type", "application/json");             //Specify content-type header
+    http.addHeader("Content-Length", String(jsonLen));
 
     int httpResponseCode = http.POST(json);   //Send the actual POST request
 
