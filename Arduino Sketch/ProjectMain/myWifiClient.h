@@ -10,12 +10,9 @@
 
 #include "Arduino.h"
 
-const char homeSSID[] = "VM0061221";
-const char homePass[] = "pcH7fjyv7dxc";
-
-const char homePcHost[] = "192.168.0.64";
-
-const int httpPort = 8000;
+const char ssid[] = "VM0061221";
+const char password[] = "pcH7fjyv7dxc";
+const char serverName[] = "http://192.168.0.64:8000/sendHeight";
 
 bool wifiClient_Init();
 bool wifiClient_GetReq();

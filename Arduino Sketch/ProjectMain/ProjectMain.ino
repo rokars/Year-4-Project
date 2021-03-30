@@ -62,9 +62,9 @@ void setup() {
     Serial.printf("comms error to bmp return %d\n\r", returnCode);
   delay(50);
 
-  bool gg = GPS_init(SoftSerial);
-  if (!gg)
-    Serial.println("*************** GPS INIT FAIL****************");
+  //bool gg = GPS_init(SoftSerial);
+  //if (!gg)
+  //  Serial.println("*************** GPS INIT FAIL****************");
 
   delay(100);
 
@@ -92,14 +92,14 @@ void loop() {
   }
   Serial.printf("\n\r\n\r%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%0.2f,%0.2f\n\r\n\r", sensorData[0], sensorData[1], sensorData[2], sensorData[3], sensorData[4], sensorData[5], sensorData[6], sensorData[7], sensorData[8], sensorData[9], sensorData[10]);
 
-  uint8_t gg = receiveGpsData(SoftSerial, buffer, a);
-  if (gg <= 0)
-    Serial.println("*************** GPS READ FAIL****************");
+  //uint8_t gg = receiveGpsData(SoftSerial, buffer, a);
+  //if (gg <= 0)
+  //  Serial.println("*************** GPS READ FAIL****************");
 
-  Serial.write(buffer, gg);
-  //gg = 0;
+  //Serial.write(buffer, gg);
+  ////gg = 0;
 
-  bool gh = wifiClient_GetReq();
+  bool gh = wifiClient_PostReq();
   if (!gh)
     Serial.println("Wifi Err");
 
