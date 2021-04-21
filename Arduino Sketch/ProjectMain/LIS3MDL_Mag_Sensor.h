@@ -37,21 +37,27 @@ class LIS3MDL_Mag
     
     const uint8_t LIS3MDL_MAG_DATA_START = 0x28;
 
+        //  BMP388 CMD register commands
+    const uint8_t LIS3MDL_SOFTRESET = 0x04;
+    const uint8_t LIS3MDL_4_GAUSS_FS = 0x0;
+    const uint8_t LIS3MDL_TEMP_DISABLE = 0x0 << 7;
+    const uint8_t LIS3MDL_XY_UH_PERFORMANCE = 0x3 << 5;
+    const uint8_t LIS3MDL_800MS_ODR = 0x1 << 2;
+    const uint8_t LIS3MDL_Z_UH_PERFORMANCE = 0xC;
+    const uint8_t LIS3MDL_BLOCK_DATA_UPDATE = 0x40;
+    const uint8_t LIS3MDL_CONTINUOUS_CONVERSION = 0x0;
+
     // LIS3MDL Constants
     const uint8_t LIS3MDL_MAG_DATA_LENGHT = 6;
-    
     const uint8_t LIS3MDL_CHIP_ID = 0x3D;
-    const uint8_t LIS3MDL_SOFTRESET = 0x04;
 
-    const uint8_t NEW_MAG_DATA = 1 << 3;
-    const uint8_t OVERRUN_MAG_DATA = 1 << 7;
+    const uint8_t NEW_MAG_DATA = 1 << 3;      // X, Y, Z axis new data available
+    const uint8_t OVERRUN_MAG_DATA = 1 << 7;  // X, Y, Z axis data overrun
 
     const uint16_t GAUSS_SENS_4 = 6842;    // LSB/gauss
     const uint16_t GAUSS_SENS_8 = 3421;    // LSB/gauss
     const uint16_t GAUSS_SENS_12 = 2281;   // LSB/gauss
     const uint16_t GAUSS_SENS_16 = 1711;   // LSB/gauss
-
-
 
 };
 

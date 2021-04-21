@@ -35,7 +35,7 @@ uint8_t BMP3XX_Sensor::BMP3XX_Board_Init() {
   uint8_t rsltFunc = COMM_ERR;
 
   //  Soft reset sensor to erase any possible old settings
-  rslt = I2C_Send_Data(I2C_Address, BMP388_CMD, BMP388_softreset);
+  rslt = I2C_Send_Data(I2C_Address, BMP388_CMD, BMP388_SOFTRESET);
   if (!rslt)
     return COMM_ERR;
 
@@ -112,6 +112,7 @@ uint8_t BMP3XX_Sensor::BMP388_Command_Ready() {
 
 /*
   Calculate and store the true trim data values to be used for correction of data readings 
+  input parameter is an array that stores raw trimming values
   Returns value via reference
 */
 uint8_t BMP3XX_Sensor::BMP3XX_Trim_Data_Parse(uint8_t *trim_arr) {
@@ -156,6 +157,7 @@ uint8_t BMP3XX_Sensor::BMP3XX_Trim_Data_Parse(uint8_t *trim_arr) {
 
 /*
   Queries the sensor for new data readings
+  input parameter is a float array to store returned measurement
   Applies compensation to data received
   Sets value via reference
   Returns Function Return Codes
@@ -191,6 +193,7 @@ uint8_t BMP3XX_Sensor::BMP388_Get_Data(float* sensData) {
 
 /*
   Formulas taken from BMP388 datasheet section 9.2 (page 55)
+  input parameter is uncompensated temperature returned from raw sensor reading
   Applies formula outlined in datasheet to raw temp readings with trimming values
   Returns compensated temperature
 */
@@ -208,6 +211,7 @@ float BMP3XX_Sensor::BMP388_Compensate_Temperature(uint32_t uncomp_temp) {
 
 /*
   Formulas taken from BMP388 datasheet section 9.3 (page 56)
+  input parameter is compensated temperature, and uncompensated pressure returned from raw sensor reading
   Applies formula outlined in datasheet to raw press readings with trimming values
   Returns compensated pressure
 */

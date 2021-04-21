@@ -28,6 +28,7 @@ LIS3MDL_Mag::LIS3MDL_Mag(bool SD0) {
    Initialise sensor
    Soft-reset and read device id to check if
    we are communicating with the correct chip
+   Returns Function Return Code
 */
 uint8_t LIS3MDL_Mag::LIS3MDL_Init() {
 
@@ -51,37 +52,33 @@ uint8_t LIS3MDL_Mag::LIS3MDL_Init() {
 
 /*
    configure settings for reading data
+   Returns Function Return Code
 */
 uint8_t LIS3MDL_Mag::LIS3MDL_Config() {
 
   bool rslt = false;
 
-  // +- 4 gauss full-scale config
-  rslt = I2C_Send_Data(I2C_Address, LIS3MDL_CTRL_REG2, 0x00);
+  rslt = I2C_Send_Data(I2C_Address, LIS3MDL_CTRL_REG2, LIS3MDL_4_GAUSS_FS);
   if (!rslt)
     return COMM_ERR;
   delay(10);
 
-  // x/y uh-performance, 10hz odr
-  rslt = I2C_Send_Data(I2C_Address, LIS3MDL_CTRL_REG1, 0x70);
+  rslt = I2C_Send_Data(I2C_Address, LIS3MDL_CTRL_REG1, LIS3MDL_TEMP_DISABLE | LIS3MDL_XY_UH_PERFORMANCE | LIS3MDL_800MS_ODR);
   if (!rslt)
     return COMM_ERR;
   delay(10);
 
-  // z uh-performance
-  rslt = I2C_Send_Data(I2C_Address, LIS3MDL_CTRL_REG4, 0x0C);
+  rslt = I2C_Send_Data(I2C_Address, LIS3MDL_CTRL_REG4, LIS3MDL_Z_UH_PERFORMANCE);
   if (!rslt)
     return COMM_ERR;
   delay(10);
 
-  // block-data update
-  rslt = I2C_Send_Data(I2C_Address, LIS3MDL_CTRL_REG5, 0x40);
+  rslt = I2C_Send_Data(I2C_Address, LIS3MDL_CTRL_REG5, LIS3MDL_BLOCK_DATA_UPDATE);
   if (!rslt)
     return COMM_ERR;
   delay(10);
 
-  // continous conversion //power down / idle
-  rslt = I2C_Send_Data(I2C_Address, LIS3MDL_CTRL_REG3, 0x00);
+  rslt = I2C_Send_Data(I2C_Address, LIS3MDL_CTRL_REG3, LIS3MDL_CONTINUOUS_CONVERSION);
   if (!rslt)
     return COMM_ERR;
 
@@ -91,7 +88,8 @@ uint8_t LIS3MDL_Mag::LIS3MDL_Config() {
 
 /*
    Read sensor data registers
-   input param is pointer to float array
+   input parameter is pointer to float array
+   Returns Function Return Code
 */
 uint8_t LIS3MDL_Mag::LIS3MDL_Get_Data(float* sensData) {
 

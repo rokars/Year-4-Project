@@ -54,14 +54,13 @@ class BMP3XX_Sensor
     const uint8_t BMP388_CMD = 0x7E;
 
     //  BMP388 CMD register commands
-    uint8_t BMP388_softreset = 0xB6;
-    uint8_t BMP388_TEMP_PRESS_ON_SLEEP = 0x3;
-    uint8_t BMP388_NORMAL_MODE = 0x3 << 4 | BMP388_TEMP_PRESS_ON_SLEEP;
-    uint8_t BMP388_FORCED_MODE = 0x2 << 4 | BMP388_TEMP_PRESS_ON_SLEEP;
-    uint8_t BMP388_2XTEMP_8XPRESS_OVERSAMPLE = 0xB;
-    uint8_t BMP388_640MS_ODR = 0x07;
-    
-    uint8_t BMP388_IIR_FILTER_COEFF_3 = 0x2;
+    const uint8_t BMP388_SOFTRESET = 0xB6;
+    const uint8_t BMP388_TEMP_PRESS_ON_SLEEP = 0x3;
+    const uint8_t BMP388_NORMAL_MODE = 0x3 << 4 | BMP388_TEMP_PRESS_ON_SLEEP;
+    const uint8_t BMP388_FORCED_MODE = 0x2 << 4 | BMP388_TEMP_PRESS_ON_SLEEP;
+    const uint8_t BMP388_2XTEMP_8XPRESS_OVERSAMPLE = 0xB;
+    const uint8_t BMP388_640MS_ODR = 0x07;
+    const uint8_t BMP388_IIR_FILTER_COEFF_3 = 0x2;
 
     //  BMP388 Constants
     const uint8_t BMP388_CALIB_DATA_LENGHT_BYTES = 21;
