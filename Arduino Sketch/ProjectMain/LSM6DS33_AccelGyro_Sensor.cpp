@@ -14,7 +14,7 @@
 
 /*
    Constructor
-   bool SD0 referring to i2c address jumper on board
+   bool SD0 referring to I2C address jumper on board
    true = high, false = low
 */
 LSM6DS33_AccelGyro::LSM6DS33_AccelGyro(bool SD0) {
@@ -28,6 +28,7 @@ LSM6DS33_AccelGyro::LSM6DS33_AccelGyro(bool SD0) {
    Initialise sensor
    Soft-reset and read device id to check if
    we are communicating with the correct chip
+   Returns Function Return Code
 */
 uint8_t LSM6DS33_AccelGyro::LSM6DS33_Init() {
 
@@ -50,27 +51,28 @@ uint8_t LSM6DS33_AccelGyro::LSM6DS33_Init() {
 
 /*
    configure settings for reading data
+   Returns Function Return Code
 */
 uint8_t LSM6DS33_AccelGyro::LSM6DS33_Config() {
 
   bool rslt = false;
 
-  rslt = I2C_Send_Data(I2C_Address, LSM6DS33_CTRL9_XL, 0x38);  // activate acc xyz axes
+  rslt = I2C_Send_Data(I2C_Address, LSM6DS33_CTRL9_XL, LSM6DS33_ENABLE_ALL_ACCEL_AXES);
   if (!rslt)
     return COMM_ERR;
   delay(10);
 
-  rslt = I2C_Send_Data(I2C_Address, LSM6DS33_CTRL1_XL, 0x10); // accel activate ODR
+  rslt = I2C_Send_Data(I2C_Address, LSM6DS33_CTRL1_XL, LSM6DS33_80MS_ODR | LSM6DS33_2G_ACCEL_FS);
   if (!rslt)
     return COMM_ERR;
   delay(10);
 
-  rslt = I2C_Send_Data(I2C_Address, LSM6DS33_CTRL10_C, 0x38);  // activate gyro xyz axes
+  rslt = I2C_Send_Data(I2C_Address, LSM6DS33_CTRL10_C, LSM6DS33_ENABLE_ALL_GYRO_AXES);
   if (!rslt)
     return COMM_ERR;
   delay(10);
 
-  rslt = I2C_Send_Data(I2C_Address, LSM6DS33_CTRL2_G, 0x10); // gyro activate ODR
+  rslt = I2C_Send_Data(I2C_Address, LSM6DS33_CTRL2_G, LSM6DS33_80MS_ODR | LSM6DS33_250_DPS_GYRO_FS);
   if (!rslt)
     return COMM_ERR;
 
@@ -80,6 +82,7 @@ uint8_t LSM6DS33_AccelGyro::LSM6DS33_Config() {
 /*
    Read sensor data registers
    input param is pointer to float array
+   Returns Function Return Code
 */
 uint8_t LSM6DS33_AccelGyro::LSM6DS33_Get_Data(float* sensData) {
 

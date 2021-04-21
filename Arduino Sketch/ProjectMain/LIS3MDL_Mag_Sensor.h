@@ -37,7 +37,7 @@ class LIS3MDL_Mag
     
     const uint8_t LIS3MDL_MAG_DATA_START = 0x28;
 
-        //  BMP388 CMD register commands
+    //  LIS3MDL CMD register commands
     const uint8_t LIS3MDL_SOFTRESET = 0x04;
     const uint8_t LIS3MDL_4_GAUSS_FS = 0x0;
     const uint8_t LIS3MDL_TEMP_DISABLE = 0x0 << 7;

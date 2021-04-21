@@ -24,7 +24,7 @@ uint8_t count = 0;
 
 bool runWifi = false;
 bool runLIS3MDL = true;
-bool runLSM6DS33 = false;
+bool runLSM6DS33 = true;
 bool runBMP3XX = true;
 bool runGPS = false;
 

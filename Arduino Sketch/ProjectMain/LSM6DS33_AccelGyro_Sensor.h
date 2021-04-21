@@ -44,13 +44,20 @@ class LSM6DS33_AccelGyro
 
     const uint8_t LSM6DS33_OUT_TEMP_L = 0x20, LSM6DS33_OUT_TEMP_H = 0x21;
 
-    const uint8_t LSM6DS33_DATA_START = 0x22;
+
+    //  LSM6DS33 CMD register commands
+    const uint8_t LSM6DS33_SOFTRESET = 1;
+    const uint8_t LSM6DS33_ENABLE_ALL_ACCEL_AXES = 0x38;
+    const uint8_t LSM6DS33_80MS_ODR = 0x10;
+    const uint8_t LSM6DS33_2G_ACCEL_FS = 0x0;
+    const uint8_t LSM6DS33_ENABLE_ALL_GYRO_AXES = 0x38;
+    const uint8_t LSM6DS33_250_DPS_GYRO_FS = 0x0;
 
     // LSM6DS33 Constants
     const uint8_t LSM6DS33_DATA_LENGHT = 12;
+    const uint8_t LSM6DS33_DATA_START = 0x22;
 
     const uint8_t LSM6DS33_CHIP_ID = 0x69;
-    const uint8_t LSM6DS33_SOFTRESET = 1;
 
     const uint8_t NEW_ACCEL_DATA = 1 << 0;
     const uint8_t NEW_GYRO_DATA = 1 << 1;

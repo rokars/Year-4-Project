@@ -14,6 +14,8 @@
 
 /*
    Constructor
+   bool SD0 referring to I2C address jumper on board
+   true = high, false = low
 */
 BMP3XX_Sensor::BMP3XX_Sensor(bool SD0) {
   if (SD0)
