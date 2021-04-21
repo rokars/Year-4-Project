@@ -25,13 +25,14 @@ BMP3XX_Sensor::BMP3XX_Sensor(bool SD0) {
 /*
    Self-test
    Soft reset -> read chip ID -> read trimming data
-   Returns true code if tests pass
+   Returns Function Return Code
 */
 uint8_t BMP3XX_Sensor::BMP3XX_Board_Init() {
 
   uint8_t sensorInfo = 0;
   uint8_t* sensorInfoPtr = &sensorInfo;
   bool rslt = false;
+  uint8_t rsltFunc = COMM_ERR;
 
   //  Soft reset sensor to erase any possible old settings
   rslt = I2C_Send_Data(I2C_Address, BMP388_CMD, BMP388_softreset);
@@ -45,15 +46,15 @@ uint8_t BMP3XX_Sensor::BMP3XX_Board_Init() {
     count--;
     if (count == 0)
       return COMM_ERR;
-  } while (!BMP388_Command_Ready());
+  } while (BMP388_Command_Ready() == READING_ERR);
 
   //  Query Event register for power on reset complete (por_detected)
-  rslt = I2C_Read_Data_Bytes(I2C_Address, BMP388_EVENT, sensorInfoPtr, 1);
+  rslt = I2C_Read_Data_Bytes(I2C_Address, BMP388_EVENT, sensorInfoPtr, ONE_BYTE);
   if (!rslt || !sensorInfo)
     return COMM_ERR;
 
   // Read chip ID number to ensure good communication
-  rslt = I2C_Read_Data_Bytes(I2C_Address, BMP388_CHIP_ID, sensorInfoPtr, 1);
+  rslt = I2C_Read_Data_Bytes(I2C_Address, BMP388_CHIP_ID, sensorInfoPtr, ONE_BYTE);
   if (!rslt)
     return COMM_ERR;
   else if (sensorInfo != BMP388_CHIP_ID_NO)
@@ -65,64 +66,55 @@ uint8_t BMP3XX_Sensor::BMP3XX_Board_Init() {
   if (!rslt)
     return COMM_ERR;
 
-  BMP3XX_Trim_Data_Parse(trim_data);
+  rsltFunc = BMP3XX_Trim_Data_Parse(trim_data);
+  if (rsltFunc != SENSOR_OK)
+    return READING_ERR;
 
   //  set to forced mode for one measurement
-  I2C_Send_Data(I2C_Address, BMP388_PWR_CTRL, 0x13);
+  I2C_Send_Data(I2C_Address, BMP388_PWR_CTRL, BMP388_FORCED_MODE);
   delay(50);
 
   // check error register for errors
   if (BMP388_Check_Err() != SENSOR_OK)
     return DEVICE_ERR;
 
-  uint8_t sensorTestData[BMP388_DATA_LENGHT_BYTES];
-  uint32_t uTestTemp, uTestPress, data_msb, data_lsb, data_xlsb;
+  // Test data read is within limits
+  float sensorTestData[2];
+  
+  rsltFunc = BMP388_Get_Data(sensorTestData);
+  if (rsltFunc != SENSOR_OK)
+    return READING_ERR;
 
-  rslt = I2C_Read_Data_Bytes(I2C_Address, BMP388_DATA_0, sensorTestData, BMP388_DATA_LENGHT_BYTES);
-  if (!rslt)
-    return COMM_ERR;
-
-  data_xlsb = sensorTestData[0];
-  data_lsb = sensorTestData[1] << 8;
-  data_msb = sensorTestData[2] << 16;
-  uTestPress = data_msb | data_lsb | data_xlsb;
-
-  data_xlsb = sensorTestData[3];
-  data_lsb = sensorTestData[4] << 8;
-  data_msb = sensorTestData[5] << 16;
-  uTestTemp = data_msb | data_lsb | data_xlsb;
-
-  float cTestTemp = BMP388_Compensate_Temperature(uTestTemp);
-  float cTestPress = BMP388_Compensate_Pressure(uTestPress, cTestTemp);
-
-  if (cTestTemp >= TEMP_UPPER_LIM_C && cTestTemp <= TEMP_LOWER_LIM_C)
+  if (sensorTestData[0] >= TEMP_UPPER_LIM_C && sensorTestData[0] <= TEMP_LOWER_LIM_C)
     return TEMP_ERR;
-  if (cTestPress >= PRESS_UPPER_LIM_HPA && cTestPress <= PRESS_LOWER_LIM_HPA)
+  if (sensorTestData[1] >= PRESS_UPPER_LIM_HPA && sensorTestData[1] <= PRESS_LOWER_LIM_HPA)
     return PRESS_ERR;
 
   return SENSOR_OK;
 }
 
 /*
-
+   Returns true if BMP388 sensor is ready to receive commands
+   Returns Function Return Code
 */
-bool BMP3XX_Sensor::BMP388_Command_Ready() {
+uint8_t BMP3XX_Sensor::BMP388_Command_Ready() {
 
   uint8_t rslt = 0, sensorStatus, *stPtr = &sensorStatus;
   rslt = I2C_Read_Data_Bytes(I2C_Address, BMP388_STATUS, stPtr, 1);
   if (rslt) {
     sensorStatus = sensorStatus >> 4;
     if (sensorStatus & 0b0001 == 1)
-      return true;
+      return SENSOR_OK;
     else
-      return false;
+      return READING_ERR;
   }
 }
 
 /*
-
+  Calculate and store the true trim data values to be used for correction of data readings 
+  Returns value via reference
 */
-void BMP3XX_Sensor::BMP3XX_Trim_Data_Parse(uint8_t *trim_arr) {
+uint8_t BMP3XX_Sensor::BMP3XX_Trim_Data_Parse(uint8_t *trim_arr) {
 
   NVM_PAR_T1 = (uint16_t) * (trim_arr + 1) << 8 | (uint16_t) * trim_arr;
   NVM_PAR_T2 = (uint16_t) * (trim_arr + 3) << 8 | (uint16_t) * (trim_arr + 2);
@@ -138,6 +130,9 @@ void BMP3XX_Sensor::BMP3XX_Trim_Data_Parse(uint8_t *trim_arr) {
   NVM_PAR_P9 = (int16_t) * (trim_arr + 18) << 8 | (int16_t) * (trim_arr + 17);
   NVM_PAR_P10 = *(trim_arr + 19);
   NVM_PAR_P11 = *(trim_arr + 20);
+
+  // Formulas taken from BMP388 datasheet section 9.1 (page 55)
+  // Adapted to remove some power functions to reduce mathematical computations required
 
   PAR_T1 = (double)NVM_PAR_T1 * 256; // 1/2^-8
   PAR_T2 = (double)NVM_PAR_T2 / 1073741824; // 2^30
@@ -155,19 +150,25 @@ void BMP3XX_Sensor::BMP3XX_Trim_Data_Parse(uint8_t *trim_arr) {
   PAR_P10 = (double)NVM_PAR_P10 / pow(2, 48);
   PAR_P11 = (double)NVM_PAR_P11 / pow(2, 65);
 
+  return SENSOR_OK;
+
 }
 
 /*
-
+  Queries the sensor for new data readings
+  Applies compensation to data received
+  Sets value via reference
+  Returns Function Return Codes
 */
-bool BMP3XX_Sensor::BMP388_Get_Data(float* sensData) {
+uint8_t BMP3XX_Sensor::BMP388_Get_Data(float* sensData) {
+  
   uint8_t sensorData[BMP388_DATA_LENGHT_BYTES];
   uint32_t uncompDataTemp, uncompDataPress, data_msb, data_lsb, data_xlsb;
   bool rslt = false;
 
   rslt = I2C_Read_Data_Bytes(I2C_Address, BMP388_DATA_0, sensorData, BMP388_DATA_LENGHT_BYTES);
   if (!rslt)
-    return false;
+    return COMM_ERR;
 
   data_xlsb = sensorData[0];
   data_lsb = sensorData[1] << 8;
@@ -185,11 +186,13 @@ bool BMP3XX_Sensor::BMP388_Get_Data(float* sensData) {
   *sensData = compTemp;
   *(sensData + 1) = compPress;
 
-  return true;
+  return SENSOR_OK;
 }
 
 /*
-
+  Formulas taken from BMP388 datasheet section 9.2 (page 55)
+  Applies formula outlined in datasheet to raw temp readings with trimming values
+  Returns compensated temperature
 */
 float BMP3XX_Sensor::BMP388_Compensate_Temperature(uint32_t uncomp_temp) {
   double partial_data1;
@@ -204,7 +207,9 @@ float BMP3XX_Sensor::BMP388_Compensate_Temperature(uint32_t uncomp_temp) {
 }
 
 /*
-
+  Formulas taken from BMP388 datasheet section 9.3 (page 56)
+  Applies formula outlined in datasheet to raw press readings with trimming values
+  Returns compensated pressure
 */
 float BMP3XX_Sensor::BMP388_Compensate_Pressure(uint32_t uncomp_press, float comp_temp) {
 
@@ -236,129 +241,119 @@ float BMP3XX_Sensor::BMP388_Compensate_Pressure(uint32_t uncomp_press, float com
   return comp_press;
 }
 
-bool BMP3XX_Sensor::BMP388_Set_Options() {
+/*
+  Sents the configuration for running the sensor
+  Returns Function Return Code
+ */
+uint8_t BMP3XX_Sensor::BMP388_Set_Options() {
 
-  uint8_t rslt, reg, *regPtr = &reg, dat;
+  bool rslt = false;
+  uint8_t reg, *regPtr = &reg, dat;
 
-  /////////////////////////////////////////////////////////////////////
-  rslt = I2C_Read_Data_Bytes(I2C_Address, BMP388_PWR_CTRL, regPtr, 1);
-  if (!rslt) {
-    Serial.println(" Error 1 ");
-    return false;
-  }
-
+  // Set sleep mode and enable temperature and pressure sensors
+  rslt = I2C_Read_Data_Bytes(I2C_Address, BMP388_PWR_CTRL, regPtr, ONE_BYTE);
+  if (!rslt)
+    return COMM_ERR;
   delay(50);
-
-  Serial.print("register PWR data: ");
-  Serial.println(reg, HEX);
-  dat = reg | (0x3);
-  Serial.print("Sending data: ");
-  Serial.println(dat, HEX);
+  
+  dat = reg | BMP388_TEMP_PRESS_ON_SLEEP;
   rslt = I2C_Send_Data(I2C_Address, BMP388_PWR_CTRL, dat);
-  if (!rslt) {
-    Serial.println(" Error 2 ");
-    return false;
-  }
-  /////////////////////////////////////////////////////////////////////
+  if (!rslt)
+    return CONFIG_ERR;
 
-  /////////////////////////////////////////////////////////////////////
-  rslt = I2C_Read_Data_Bytes(I2C_Address, BMP388_OSR, regPtr, 1);
-  if (!rslt) {
-    Serial.println(" Error 1 ");
-    return false;
-  }
 
+  // Set Oversampling to 2 times for temperature and 8 times for pressure
+  rslt = I2C_Read_Data_Bytes(I2C_Address, BMP388_OSR, regPtr, ONE_BYTE);
+  if (!rslt)
+    return COMM_ERR;
   delay(50);
 
-  Serial.print("register OSR data: ");
-  Serial.println(reg, HEX);
-  dat = reg | (0xB);  // 2x temp 8x press
-  Serial.print("Sending data: ");
-  Serial.println(dat, HEX);
+  dat = reg | BMP388_2XTEMP_8XPRESS_OVERSAMPLE;
   rslt = I2C_Send_Data(I2C_Address, BMP388_OSR, dat);
-  if (!rslt) {
-    Serial.println(" Error 2 ");
-    return false;
-  }
-  /////////////////////////////////////////////////////////////////////
+  if (!rslt)
+    return CONFIG_ERR;
 
-  /////////////////////////////////////////////////////////////////////
-  rslt = I2C_Read_Data_Bytes(I2C_Address, BMP388_ODR, regPtr, 1);
-  if (!rslt) {
-    Serial.println(" Error 1 ");
-    return false;
-  }
 
+  // Set the sampling period to 640ms
+  rslt = I2C_Read_Data_Bytes(I2C_Address, BMP388_ODR, regPtr, ONE_BYTE);
+  if (!rslt)
+    return COMM_ERR;
   delay(50);
 
-  Serial.print("register ODR data: ");
-  Serial.println(reg, HEX);
-  dat = reg | (0x4);    // 80ms sampling period
-  Serial.print("Sending data: ");
-  Serial.println(dat, HEX);
+  dat = reg | BMP388_640MS_ODR;
   rslt = I2C_Send_Data(I2C_Address, BMP388_ODR, dat);
-  if (!rslt) {
-    Serial.println(" Error 2 ");
-    return false;
-  }
-  /////////////////////////////////////////////////////////////////////
+  if (!rslt)
+    return CONFIG_ERR;
 
-  /////////////////////////////////////////////////////////////////////
-  rslt = I2C_Read_Data_Bytes(I2C_Address, BMP388_PWR_CTRL, regPtr, 1);
-  if (!rslt) {
-    Serial.println(" Error 1 ");
-    return false;
-  }
 
+  // Enable normal mode for taking measurements
+  rslt = I2C_Read_Data_Bytes(I2C_Address, BMP388_PWR_CTRL, regPtr, ONE_BYTE);
+  if (!rslt)
+    return COMM_ERR;
   delay(50);
 
-  Serial.print("register PWR data: ");
-  Serial.println(reg, HEX);
-  dat = reg | (0x3 << 4);   // normal mode turn on
-  Serial.print("Sending data: ");
-  Serial.println(dat, HEX);
+  dat = reg | BMP388_NORMAL_MODE;
   rslt = I2C_Send_Data(I2C_Address, BMP388_PWR_CTRL, dat);
-  if (!rslt) {
-    Serial.println(" Error 2 ");
-    return false;
-  }
-  /////////////////////////////////////////////////////////////////////
+  if (!rslt)
+    return CONFIG_ERR;
 
-  /////////////////////////////////////////////////////////////////////
-  rslt = I2C_Read_Data_Bytes(I2C_Address, BMP388_CONFIG, regPtr, 1);
-  if (!rslt) {
-    Serial.println(" Error 1 ");
-    return false;
-  }
 
+  // Set the IIR filter coefficient to 3
+  rslt = I2C_Read_Data_Bytes(I2C_Address, BMP388_CONFIG, regPtr, ONE_BYTE);
+  if (!rslt)
+    return COMM_ERR;
   delay(50);
 
-  Serial.print("register CONFIG data: ");
-  Serial.println(reg, HEX);
-  dat = reg | (0x1 << 1);  // 3 filter coeff
-  Serial.print("Sending data: ");
-  Serial.println(dat, HEX);
+  dat = reg | BMP388_IIR_FILTER_COEFF_3;
   rslt = I2C_Send_Data(I2C_Address, BMP388_CONFIG, dat);
-  if (!rslt) {
-    Serial.println(" Error 2 ");
-    return false;
-  }
-  /////////////////////////////////////////////////////////////////////
-
-  I2C_Read_Data_Bytes(I2C_Address, BMP388_PWR_CTRL, regPtr, 1);
-  Serial.printf("Read PWR Reg %d\n\r", reg);
-  I2C_Read_Data_Bytes(I2C_Address, BMP388_OSR, regPtr, 1);
-  Serial.printf("Read OSR Reg %d\n\r", reg);
-  I2C_Read_Data_Bytes(I2C_Address, BMP388_ODR, regPtr, 1);
-  Serial.printf("Read ODR Reg %d\n\r", reg);
-  I2C_Read_Data_Bytes(I2C_Address, BMP388_PWR_CTRL, regPtr, 1);
-  Serial.printf("Read PWR Reg %d\n\r", reg);
-  I2C_Read_Data_Bytes(I2C_Address, BMP388_CONFIG, regPtr, 1);
-  Serial.printf("Read CONFIG Reg %d\n\r", reg);
+  if (!rslt)
+    return CONFIG_ERR;
 
   return SENSOR_OK;
 }
 
+/*
+  Reading all BMP388 registers that are configured when setting up
+  Used for checking the register data set is correct
+  Returns Function Return Code
+ */
+uint8_t BMP3XX_Sensor::BMP388_Read_Config() {
+
+  bool rslt = false;
+  uint8_t reg, *regPtr = &reg;
+  
+  rslt = I2C_Read_Data_Bytes(I2C_Address, BMP388_PWR_CTRL, regPtr, ONE_BYTE);
+  if (!rslt)
+    return COMM_ERR;
+  Serial.printf("Read PWR configuration register %d\n\r", reg);
+  
+  rslt = I2C_Read_Data_Bytes(I2C_Address, BMP388_OSR, regPtr, ONE_BYTE);
+  if (!rslt)
+    return COMM_ERR;
+  Serial.printf("Read OSR configuration register %d\n\r", reg);
+  
+  rslt = I2C_Read_Data_Bytes(I2C_Address, BMP388_ODR, regPtr, ONE_BYTE);
+  if (!rslt)
+    return COMM_ERR;
+  Serial.printf("Read ODR configuration register %d\n\r", reg);
+  
+  rslt = I2C_Read_Data_Bytes(I2C_Address, BMP388_PWR_CTRL, regPtr, ONE_BYTE);
+  if (!rslt)
+    return COMM_ERR;
+  Serial.printf("Read PWR configuration register %d\n\r", reg);
+  
+  rslt = I2C_Read_Data_Bytes(I2C_Address, BMP388_CONFIG, regPtr, ONE_BYTE);
+  if (!rslt)
+    return COMM_ERR;
+  Serial.printf("Read CONFIG configuration register %d\n\r", reg);
+  
+  return SENSOR_OK;
+}
+
+/*
+  Testing sensor error register for values higher than zero
+  Returns Function Return Code
+ */
 uint8_t BMP3XX_Sensor::BMP388_Check_Err() {
 
   uint8_t sensorInfo = 0;

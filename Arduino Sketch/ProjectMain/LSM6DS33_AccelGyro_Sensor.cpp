@@ -1,8 +1,8 @@
 
 /*
    LSM6DS33_AccelGyro_Sensor.h - Library for connecting and
-   receiving data from LSM6DS33 magnetometer sensor
-   Created by Rokas Cesiunas 22 FEB, 2021
+   receiving data from LSM6DS33 magnetometer sensor,
+   Created by Rokas Cesiunas, 22 FEB, 2021
 */
 
 #include "Arduino.h"  // Standard arduino functions

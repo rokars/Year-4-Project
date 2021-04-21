@@ -1,8 +1,8 @@
 
 /*
    SIM28_GPS_Receiver.cpp - Library for connecting and
-   receiving data from SIM28 GPS Receiver
-   Created by Rokas Cesiunas 11 MAR, 2021
+   receiving data from SIM28 GPS Receiver,
+   Created by Rokas Cesiunas, 11 MAR, 2021
 */
 
 #include "Arduino.h"  // Standard arduino functions
@@ -16,9 +16,6 @@ bool GPS_init(SoftwareSerial &gpsSerial) {
   gpsSerial.begin(9600);                 // the SoftSerial baud rate
   delay(250);
 
-  Serial.println("Software Serial GPS Test Echo Test");
-  // you can send various commands to get it started
-  //mySerial.println(PMTK_SET_NMEA_OUTPUT_RMCGGA);
   gpsSerial.println(PMTK_SET_BAUD_57600);
 
   delay(20);
@@ -32,9 +29,6 @@ bool GPS_init(SoftwareSerial &gpsSerial) {
   gpsSerial.println(PMTK_SET_NMEA_UPDATE_1HZ);
 
   return true;
-
-  //Serial.println("Get version!");
-  //mySerial.println(PMTK_Q_RELEASE);
 }
 
 uint8_t receiveGpsData(SoftwareSerial &gpsSerial, unsigned char* dataRec, uint8_t dataRecSize) {

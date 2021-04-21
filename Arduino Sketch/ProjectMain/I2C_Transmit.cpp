@@ -5,11 +5,10 @@
   Created by Rokas Cesiunas, 10 FEB 2021.
 */
 
-#include "Arduino.h"
+#include "Arduino.h"  // Standard arduino functions
 #include "I2C_Transmit.h"
-#include <Wire.h>
-#include <cstdint>
-
+#include <Wire.h>     // I2C communication
+#include <cstdint>    // C style integers
 
 bool I2C_Send_Data(uint8_t add, uint8_t reg, uint8_t dat) {
 

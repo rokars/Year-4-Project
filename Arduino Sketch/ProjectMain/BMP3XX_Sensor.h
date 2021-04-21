@@ -1,8 +1,8 @@
 
 /*
   BMP3XX_Sensor.h - Library for connecting and receiving data from
-  Bosch BMP3XX family sensors
-  Created by Rokas Cesiunas, 09 FEB, 2021.
+  Bosch BMP3XX family sensors,
+  Created by Rokas Cesiunas, 09 FEB 2021.
 */
 
 #ifndef BMP3XX_SENSOR_H
@@ -15,14 +15,15 @@
 class BMP3XX_Sensor
 {
   public:
-    BMP3XX_Sensor(bool);                             // Contstructor
+    BMP3XX_Sensor(bool);                                           // Contstructor
     uint8_t BMP3XX_Board_Init();                                   // Self-test
-    bool BMP388_Command_Ready();                                // CMD decoder status
-    void BMP3XX_Trim_Data_Parse(uint8_t*);                //
+    uint8_t BMP388_Command_Ready();                                // CMD decoder status
+    uint8_t BMP3XX_Trim_Data_Parse(uint8_t*);
     float BMP388_Compensate_Temperature(uint32_t);
-    float BMP388_Compensate_Pressure(uint32_t, float);  //
-    bool BMP388_Get_Data(float*);                                     //
-    bool BMP388_Set_Options();
+    float BMP388_Compensate_Pressure(uint32_t, float);
+    uint8_t BMP388_Get_Data(float*);
+    uint8_t BMP388_Set_Options();
+    uint8_t BMP388_Read_Config();
     uint8_t BMP388_Check_Err();
 
 
@@ -54,6 +55,13 @@ class BMP3XX_Sensor
 
     //  BMP388 CMD register commands
     uint8_t BMP388_softreset = 0xB6;
+    uint8_t BMP388_TEMP_PRESS_ON_SLEEP = 0x3;
+    uint8_t BMP388_NORMAL_MODE = 0x3 << 4 | BMP388_TEMP_PRESS_ON_SLEEP;
+    uint8_t BMP388_FORCED_MODE = 0x2 << 4 | BMP388_TEMP_PRESS_ON_SLEEP;
+    uint8_t BMP388_2XTEMP_8XPRESS_OVERSAMPLE = 0xB;
+    uint8_t BMP388_640MS_ODR = 0x07;
+    
+    uint8_t BMP388_IIR_FILTER_COEFF_3 = 0x2;
 
     //  BMP388 Constants
     const uint8_t BMP388_CALIB_DATA_LENGHT_BYTES = 21;

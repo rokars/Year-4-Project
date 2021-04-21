@@ -1,8 +1,8 @@
 
 /*
    LIS3MDL_Mag_Sensor.h - Library for connecting and
-   receiving data from LISMDL magnetometer sensor
-   Created by Rokas Cesiunas 22 FEB, 2021
+   receiving data from LISMDL magnetometer sensor,
+   Created by Rokas Cesiunas, 22 FEB, 2021
 */
 
 #include "Arduino.h" // Standard arduino functions

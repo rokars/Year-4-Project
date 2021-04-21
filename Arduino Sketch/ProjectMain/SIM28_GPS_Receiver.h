@@ -1,8 +1,8 @@
 
 /*
    SIM28_GPS_Receiver.h - Library for connecting and
-   receiving data from SIM28 GPS Receiver
-   Created by Rokas Cesiunas 11 MAR, 2021
+   receiving data from SIM28 GPS Receiver,
+   Created by Rokas Cesiunas, 11 MAR, 2021
 */
 
 #ifndef SIM28_GPS_RECEIVER_H
