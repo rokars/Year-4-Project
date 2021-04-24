@@ -58,7 +58,6 @@ class LIS3MDL_Mag
     const uint16_t GAUSS_SENS_8 = 3421;    // LSB/gauss
     const uint16_t GAUSS_SENS_12 = 2281;   // LSB/gauss
     const uint16_t GAUSS_SENS_16 = 1711;   // LSB/gauss
-
 };
 
 #endif

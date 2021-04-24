@@ -17,23 +17,19 @@ LSM6DS33_AccelGyro accgyr(false);
 BMP3XX_Sensor bmp(true);
 
 uint8_t returnCode = SENSOR_OK;
-bool wifiRes = false;
-bool gpsRes = false;
-
-const uint8_t a = 128;
-unsigned char buffer[a];                   // buffer array for data receive over serial port
-uint8_t count = 0;
-
 bool runWifi = true;
 bool runLIS3MDL = true;
 bool runLSM6DS33 = true;
 bool runBMP3XX = true;
-bool runGPS = false;
+bool runGPS = true;
+
+const uint8_t gpsBufferSize = 128;
+unsigned char gpsBuffer[gpsBufferSize];       // buffer array for data receive over SoftSerial port
 
 SoftwareSerial SoftSerial(0, 2);
 
 void setup() {
-  // put your setup code here, to run once:
+
   Wire.begin();
 
   Serial.begin(115200);
@@ -42,10 +38,12 @@ void setup() {
   }
 
   if (runWifi) {
-    wifiRes = wifiClient_Init();
-    if (!wifiRes)
+    returnCode = wifiClient_Init();
+    if (returnCode != SENSOR_OK) {
       Serial.println("Initialisation WIFI error\n\r");
-    delay(100);
+      runWifi = false;
+    }
+    delay(50);
   }
 
   if (runLIS3MDL) {
@@ -55,8 +53,11 @@ void setup() {
       if (returnCode != SENSOR_OK)
         Serial.printf("Config LIS3MDL error %d\n\r", returnCode);
     }
-    else
+    else {
       Serial.printf("Initialisation LIS3MDL error %d\n\r", returnCode);
+      runLIS3MDL = false;
+    }
+    delay(50);
   }
 
   if (runLSM6DS33) {
@@ -66,8 +67,11 @@ void setup() {
       if (returnCode != SENSOR_OK)
         Serial.printf("Config LSM6DS33 error %d\n\r", returnCode);
     }
-    else
+    else {
       Serial.printf("Initialisation LSM6DS33 error %d\n\r", returnCode);
+      runLSM6DS33 = false;
+    }
+    delay(50);
   }
 
   if (runBMP3XX) {
@@ -77,20 +81,23 @@ void setup() {
       if (returnCode != SENSOR_OK)
         Serial.printf("Config BMP388 error %d\n\r", returnCode);
     }
-    else
+    else {
       Serial.printf("Initialisation BMP388 error %d\n\r", returnCode);
+      runBMP3XX = false;
+    }
     delay(50);
   }
 
   if (runGPS) {
-    bool gpsRes = GPS_init(SoftSerial);
-    if (!gpsRes)
+    returnCode = GPS_init(SoftSerial);
+    if (returnCode != SENSOR_OK) {
       Serial.println("Initialisation GPS error\n\r");
+      runGPS = false;
+    }
+    delay(50);
   }
 
   delay(100);
-
-  Serial.println("MagX,MagY,MagZ,GyroX,GyroY,GyroZ,AccelX,AccelY,AccelZ,TempC,PressPa");
 }
 
 void loop() {
@@ -115,40 +122,20 @@ void loop() {
       Serial.printf("Get Data BMP388 error %d\n\r", returnCode);
   }
 
-  Serial.printf("\n\r\n\r%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%0.2f,%0.2f\n\r\n\r", sensorData[0], sensorData[1], sensorData[2], sensorData[3], sensorData[4], sensorData[5], sensorData[6], sensorData[7], sensorData[8], sensorData[9], sensorData[10]);
-
   if (runGPS) {
-    uint8_t gg = receiveGpsData(SoftSerial, buffer, a);
-    if (gg <= 0)
+    uint8_t recDataCount = receiveGpsData(SoftSerial, gpsBuffer, sizeof(gpsBuffer));
+    if (recDataCount <= 0)
       Serial.println("GPS read Err");
-
-    Serial.write(buffer, gg);
-    gg = 0;
   }
 
   if (runWifi) {
-    bool gh = wifiClient_PostReq(sensorData);
-    if (!gh)
+    returnCode = wifiClient_PostReq(sensorData, gpsBuffer);
+    if (returnCode != SENSOR_OK)
       Serial.println("Wifi Err");
   }
 
+  //  Serial.println("MagX,MagY,MagZ,GyroX,GyroY,GyroZ,AccelX,AccelY,AccelZ,TempC,PressPa");
+  //  Serial.printf("\n\r\n\r%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%0.2f,%0.2f\n\r\n\r", sensorData[0], sensorData[1], sensorData[2], sensorData[3], sensorData[4], sensorData[5], sensorData[6], sensorData[7], sensorData[8], sensorData[9], sensorData[10]);
+
   delay(1000);
 }
-
-/*
-   void loop() {
-  if (Serial.available()) {
-   char c = Serial.read();
-   Serial.write(c);
-   mySerial.write(c);
-  }
-  if (mySerial.available()) {
-    char c = mySerial.read();
-    Serial.write(c);
-  }
-  }
-*/
-
-//Serial.printf("M:%.2f,%.2f,%.2f\n\r", sensorData[0], sensorData[1], sensorData[2]);//mag
-//Serial.printf("G,%.2f,%.2f,%.2f\n\r", sensorData[3], sensorData[4], sensorData[5]);//gyro
-//Serial.printf("A,%.2f,%.2f,%.2f\n\r", sensorData[6], sensorData[7], sensorData[8]);//accel

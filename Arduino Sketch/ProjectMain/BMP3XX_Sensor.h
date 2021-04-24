@@ -107,7 +107,6 @@ class BMP3XX_Sensor
 
     const uint16_t PRESS_UPPER_LIM_HPA = 1100;
     const uint16_t PRESS_LOWER_LIM_HPA = 900;
-
 };
 
 #endif

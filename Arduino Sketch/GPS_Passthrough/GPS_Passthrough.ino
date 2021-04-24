@@ -3,6 +3,8 @@
 SoftwareSerial SoftSerial(0, 2);            // rx, tx
 const int a = 128;
 unsigned char buffer[a];                   // buffer array for data receive over serial port
+char ackRec[] = "$PMTK001,0,3*30";
+
 int count = 0;                              // counter for buffer array
 
 //void gpsInit(SoftwareSerial&);
@@ -11,9 +13,9 @@ int count = 0;                              // counter for buffer array
 void setup()
 {
 
-  gpsInit(SoftSerial);
-
   Serial.begin(115200);                     // the Serial port of Arduino baud rate.
+
+  gpsInit(SoftSerial);
 
 }
 
@@ -73,12 +75,9 @@ uint8_t gpsReceive(SoftwareSerial &gpsSerial, unsigned char* dataRec, uint8_t da
 
 void gpsInit(SoftwareSerial &sftsrl) {
 
+  unsigned char ackBuf[20];
+  
   sftsrl.begin(9600);                 // the SoftSerial baud rate
-  delay(100);
-  Serial.println("\n\rsending packet");
-  unsigned char b[50] = { "$PMTK000*32\r\n" };
-  sftsrl.write(b, 14);
-
   delay(250);
 
   Serial.println("Software Serial GPS Test Echo Test");
@@ -92,9 +91,29 @@ void gpsInit(SoftwareSerial &sftsrl) {
   sftsrl.begin(57600);
   delay(20);
 
+  Serial.println("\n\rsending packet");
+  sftsrl.println("$PMTK000*32");
+
+  delay(50);
+  while (!sftsrl.available())
+  {}
+
+  Serial.write(ackBuf, 20);
+  Serial.println("received");
+
+  if(ackBuf[0] == '$' && ackBuf[1] == 'P' && ackBuf[2] == 'M' && ackBuf[3] == 'T' && ackBuf[4] == 'K' && ackBuf[5] == '0' && ackBuf[6] == '0' && ackBuf[7] == '1'
+     && ackBuf[8] == ',' && ackBuf[9] == '0' && ackBuf[10] == ',' && ackBuf[11] == '3' && ackBuf[12] == '*' && ackBuf[13] == '3' && ackBuf[14] == '0') {
+    Serial.println("GOt ack ");
+  }
+  else
+    Serial.println("not got");
+
+  delay(100);
   sftsrl.println("$PMTK314,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0*29");
   delay(100);
   sftsrl.println("$PMTK220,500*2B");
+  delay(100);
+
 }
 
 /*if (Serial.available()) {       // if data is available on hardware serial port ==> data is coming from PC or notebook

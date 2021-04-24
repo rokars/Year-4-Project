@@ -154,7 +154,6 @@ uint8_t BMP3XX_Sensor::BMP3XX_Trim_Data_Parse(uint8_t *trim_arr) {
   PAR_P11 = (double)NVM_PAR_P11 / pow(2, 65);
 
   return SENSOR_OK;
-
 }
 
 /*
@@ -208,7 +207,6 @@ float BMP3XX_Sensor::BMP388_Compensate_Temperature(uint32_t uncomp_temp) {
 
   t_lin = partial_data2 + (partial_data1 * partial_data1) * PAR_T3;
   return t_lin;
-
 }
 
 /*
