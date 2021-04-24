@@ -16,6 +16,6 @@ const char serverName[] = "http://192.168.0.64:8000/sendHeight";
 
 bool wifiClient_Init();
 bool wifiClient_GetReq();
-bool wifiClient_PostReq();
+bool wifiClient_PostReq(float*);
 
 #endif

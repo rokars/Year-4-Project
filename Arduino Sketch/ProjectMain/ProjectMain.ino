@@ -17,12 +17,14 @@ LSM6DS33_AccelGyro accgyr(false);
 BMP3XX_Sensor bmp(true);
 
 uint8_t returnCode = SENSOR_OK;
+bool wifiRes = false;
+bool gpsRes = false;
 
 const uint8_t a = 128;
 unsigned char buffer[a];                   // buffer array for data receive over serial port
 uint8_t count = 0;
 
-bool runWifi = false;
+bool runWifi = true;
 bool runLIS3MDL = true;
 bool runLSM6DS33 = true;
 bool runBMP3XX = true;
@@ -40,9 +42,9 @@ void setup() {
   }
 
   if (runWifi) {
-    bool ga = wifiClient_Init();
-    if (!ga)
-      Serial.println("*************** WIFI INIT FAIL *************");
+    wifiRes = wifiClient_Init();
+    if (!wifiRes)
+      Serial.println("Initialisation WIFI error\n\r");
     delay(100);
   }
 
@@ -53,6 +55,8 @@ void setup() {
       if (returnCode != SENSOR_OK)
         Serial.printf("Config LIS3MDL error %d\n\r", returnCode);
     }
+    else
+      Serial.printf("Initialisation LIS3MDL error %d\n\r", returnCode);
   }
 
   if (runLSM6DS33) {
@@ -62,6 +66,8 @@ void setup() {
       if (returnCode != SENSOR_OK)
         Serial.printf("Config LSM6DS33 error %d\n\r", returnCode);
     }
+    else
+      Serial.printf("Initialisation LSM6DS33 error %d\n\r", returnCode);
   }
 
   if (runBMP3XX) {
@@ -72,14 +78,14 @@ void setup() {
         Serial.printf("Config BMP388 error %d\n\r", returnCode);
     }
     else
-      Serial.printf("comms error to bmp return %d\n\r", returnCode);
+      Serial.printf("Initialisation BMP388 error %d\n\r", returnCode);
     delay(50);
   }
 
   if (runGPS) {
-    bool gg = GPS_init(SoftSerial);
-    if (!gg)
-      Serial.println("*************** GPS INIT FAIL****************");
+    bool gpsRes = GPS_init(SoftSerial);
+    if (!gpsRes)
+      Serial.println("Initialisation GPS error\n\r");
   }
 
   delay(100);
@@ -108,27 +114,25 @@ void loop() {
     if (returnCode != SENSOR_OK)
       Serial.printf("Get Data BMP388 error %d\n\r", returnCode);
   }
-  
+
   Serial.printf("\n\r\n\r%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%0.2f,%0.2f\n\r\n\r", sensorData[0], sensorData[1], sensorData[2], sensorData[3], sensorData[4], sensorData[5], sensorData[6], sensorData[7], sensorData[8], sensorData[9], sensorData[10]);
 
   if (runGPS) {
     uint8_t gg = receiveGpsData(SoftSerial, buffer, a);
     if (gg <= 0)
-      Serial.println("*************** GPS READ FAIL****************");
-  
+      Serial.println("GPS read Err");
+
     Serial.write(buffer, gg);
     gg = 0;
   }
 
   if (runWifi) {
-    bool gh = wifiClient_PostReq();
+    bool gh = wifiClient_PostReq(sensorData);
     if (!gh)
       Serial.println("Wifi Err");
   }
 
   delay(1000);
-
-
 }
 
 /*

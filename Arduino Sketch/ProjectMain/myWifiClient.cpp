@@ -21,6 +21,33 @@ bool wifiClient_Init() {
 }
 
 
+bool wifiClient_PostReq(float *postData) {
+
+  if (WiFi.status() == WL_CONNECTED) { //Check WiFi connection status
+
+    // Use WiFiClient class to create TCP connections
+    HTTPClient http;
+
+    const String json2 = String("{\"Sensor_Data\": [{\"Magnetometer_X\":") + * postData + ",\"Magnetometer_Y\":" + * (postData + 1) + ",\"Magnetometer_Z\":" + * (postData + 2) + ",\"Gyroscope_X\":" + * (postData + 3) + ",\"Gyroscope_Y\":" + * (postData + 4) + ",\"Gyroscope_Z\":" + * (postData + 5) + ",\"Accelerometer_X\":" + * (postData + 6) + ",\"Accelerometer_Y\":" + * (postData + 7) + ",\"Accelerometer_Z\":" + * (postData + 8) + ",\"Temperature\":" + * (postData + 9) + ",\"Pressure\":" + * (postData + 10) + "}]}";
+    const uint8_t jsonLen = json2.length();
+
+    http.begin(serverName);  //Specify destination for HTTP request
+    http.addHeader("Content-Type", "application/json");             //Specify content-type header
+    http.addHeader("Content-Length", String(jsonLen));
+
+    int httpResponseCode = http.POST(json2);   //Send the actual POST request
+
+    Serial.print("HTTP Response code: ");
+    Serial.println(httpResponseCode);
+    
+    http.end();  //Free resources
+    
+    return true;
+  }
+  else
+    return false;
+}
+
 bool wifiClient_GetReq() {
 
   /*Serial.print("connecting to ");
@@ -66,33 +93,4 @@ bool wifiClient_GetReq() {
     Serial.println();
     Serial.println("closing connection");
     return true;*/
-}
-
-bool wifiClient_PostReq() {
-
-
-  if (WiFi.status() == WL_CONNECTED) { //Check WiFi connection status
-
-    // Use WiFiClient class to create TCP connections
-    HTTPClient http;
-
-    const String json = "{\"mock_data\": [{\"TimeStampDate\": \"2020-12-26T13:55:12Z\",\"AltitudeQnh_meters\": 85,\"AirSpeed_knots\": -24.3,\"VerticalSpeed_ms\": 4.08,\"NormalAcceleration_g\": 0.85,\"MotorPower_volts\": 3.4}]}";
-    const uint8_t jsonLen = json.length();
-
-    http.begin(serverName);  //Specify destination for HTTP request
-    http.addHeader("Content-Type", "application/json");             //Specify content-type header
-    http.addHeader("Content-Length", String(jsonLen));
-
-    int httpResponseCode = http.POST(json);   //Send the actual POST request
-
-    Serial.print("HTTP Response code: ");
-    Serial.println(httpResponseCode);
-
-
-    http.end();  //Free resources
-    return true;
-  }
-  else {
-    return false;
-  }
 }
