@@ -1,0 +1,17 @@
+POST http://192.168.0.64:4000/app/postData
+Content-Type: application/json
+
+{
+    "Magnetometer_X": 100000,
+    "Magnetometer_Y": 1.961887,
+    "Magnetometer_Z": 1.961893,
+    "Gyroscope_X": 0.049022,
+    "Gyroscope_Y": -0.107665,
+    "Gyroscope_Z": -0.09331,
+    "Accelerometer_X": 0.010797,
+    "Accelerometer_Y": 0.003843,
+    "Accelerometer_Z": 1.031998,
+    "Temperature": 20.06859,
+    "Pressure": 100987.1,
+    "GPS_String": "$GPRMC,000016.799,V,,,,,0.00,0.00,05018 ,,,N*41\r\n$GPRMC,000017.7"
+}

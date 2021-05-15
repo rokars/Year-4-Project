@@ -48,8 +48,9 @@ function readData(dataInput) {
 
 function createGraphs(data) {
 
-  let chartElements = ['altitudeChart','airSpeedChart', 'vertSpeedChart', 'nAccelChart', 'mPowerChart']
-  let chartLabels = ['Altitude Qnh (meters)', 'Air Speed (knots)', 'VerticalSpeed (ms)', 'Normal Acceleration (g)', 'Motor Power (volts)']
+  let chartElements = ['magnetometerChart','gyroscopeChart', 'accelerometerChart', 'temperatureChart', 'pressureChart', 'gpsChart']
+  let chartLabels = ['Magnetometer X', 'Magnetometer Y', 'Magnetometer Z', 'gyroscope X', 'gyroscope Y', 'gyroscope Z', 
+                      'Accelerometer X', 'Accelerometer Y', 'Accelerometer Z', 'Temperature (C)', 'Pressure ()']
 
   for(let i = 0; i < chartElements.length; i++) {
     let chart = document.getElementById(chartElements[i]).getContext('2d');

@@ -1,0 +1,90 @@
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="#">
+    <title>Y4</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment-with-locales.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
+  </head>
+
+  <body style="background-color:#f5f5ed;">
+
+    <div class="flex-container">
+      <div class="divH1"><h1>DFDR Y4 Project Dashboard</h1></div>
+      <div class="divLabel"><label for="dataFileUpload" style="">Choose data file to upload (JSON)</label></div>
+      <div class="divPara"><p id="dataFileName">No files currently selected for upload</p></div>
+    </div>
+
+    <div class="flex-container2">
+      <button type="button" class="collapsible">Magnetometer Charts</button>
+      <div class="content">
+        <div class="chart-container">
+          <canvas id="magnetometerChartX"></canvas>
+        </div>
+        <div class="chart-container">
+          <canvas id="magnetometerChartY"></canvas>
+        </div>
+        <div class="chart-container">
+          <canvas id="magnetometerChartZ"></canvas>
+        </div>
+      </div>
+
+      <button type="button" class="collapsible">Gyroscope Charts</button>
+      <div class="content">
+        <div class="chart-container">
+          <canvas id="gyroscopeChartX"></canvas>
+        </div>
+        <div class="chart-container">
+          <canvas id="gyroscopeChartY"></canvas>
+        </div>
+        <div class="chart-container">
+          <canvas id="gyroscopeChartZ"></canvas>
+        </div>
+      </div>
+
+      <button type="button" class="collapsible">Accelerometer Charts</button>
+      <div class="content">
+        <div class="chart-container">
+          <canvas id="accelerometerChartX"></canvas>
+        </div>
+        <div class="chart-container">
+          <canvas id="accelerometerChartY"></canvas>
+        </div>
+        <div class="chart-container">
+          <canvas id="accelerometerChartZ"></canvas>
+        </div>
+      </div>
+
+      <button type="button" class="collapsible">Temperature Chart</button>
+      <div class="content">
+        <div class="chart-container">
+          <canvas id="temperatureChart"></canvas>
+        </div>
+      </div>
+
+      <button type="button" class="collapsible">Pressure Chart</button>
+      <div class="content">
+        <div class="chart-container">
+          <canvas id="pressureChart"></canvas>
+        </div>
+      </div>
+
+      <button type="button" class="collapsible">GPS Charts</button>
+      <div class="content">
+        <div class="chart-container">
+          <canvas id="gpsChart"></canvas>
+        </div>
+      </div>
+
+    </div>  <!-- end flex container2 -->
+
+    <input type="file" id="dataFileUpload" accept=".json">
+    <script src="script.js"></script>
+  </body>
+</html>

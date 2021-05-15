@@ -41,9 +41,8 @@ uint8_t wifiClient_PostReq(float *sensorData, unsigned char* gpsData) {
     // Use WiFiClient class to create TCP connections
     HTTPClient http;
 
-    StaticJsonDocument<384> doc;  // json size in ram see https://arduinojson.org/v6/assistant/
+    StaticJsonDocument<384> Sensor_Data_0;  // json size in ram see https://arduinojson.org/v6/assistant/
 
-    JsonObject Sensor_Data_0 = doc["Sensor_Data"].createNestedObject();
     Sensor_Data_0["Magnetometer_X"] = * sensorData;;
     Sensor_Data_0["Magnetometer_Y"] = * (sensorData + 1);
     Sensor_Data_0["Magnetometer_Z"] = * (sensorData + 2);
@@ -58,7 +57,7 @@ uint8_t wifiClient_PostReq(float *sensorData, unsigned char* gpsData) {
     Sensor_Data_0["GPS_String"] = gpsData;
 
     String json;
-    serializeJson(doc, json);
+    serializeJson(Sensor_Data_0, json);
 
     http.begin(serverName);  //Specify destination for HTTP request
     http.addHeader("Content-Type", "application/json");             //Specify content-type header
